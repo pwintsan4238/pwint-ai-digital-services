@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pwint AI Digital Services</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&family=Noto+Sans+Myanmar:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: sticky top bar, hero with one live transformation, 2x2 category cards; category pages stack
+   service sections that read INPUT > AI PROCESS > OUTPUT, then package, examples, CTA. Enquiry is its own page. */
+:root{
+  --paper:#F2F4F9; --card:#FFFFFF; --ink:#12163A; --ink-2:#4A5073; --line:#DCE0EC; --line-2:#C3C9DC;
+  --ai:#E3A000; --ai-soft:#FFF2CE; --ai-ink:#6A4800;
+  --out:#0B8A6A; --out-soft:#D9F4EB; --out-ink:#05503C;
+  --btn-bg:#12163A; --btn-fg:#FFFFFF; --shadow:0 1px 2px rgba(18,22,58,.06),0 8px 28px rgba(18,22,58,.07);
+  --err:#B3261E; --err-soft:#FDE8E6;
+  --f-display:"Bricolage Grotesque","Noto Sans Myanmar","Myanmar Text",sans-serif;
+  --f-body:"DM Sans","Noto Sans Myanmar","Myanmar Text","Padauk",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0C0F26; --card:#151A3D; --ink:#EDEFFA; --ink-2:#A6ACCB; --line:#262C57; --line-2:#38407A;
+  --ai:#F2B63A; --ai-soft:#3A2D0B; --ai-ink:#F6D58E;
+  --out:#3FD3A5; --out-soft:#0E3B31; --out-ink:#9BEBD3;
+  --btn-bg:#EDEFFA; --btn-fg:#0C0F26; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 28px rgba(0,0,0,.35);
+  --err:#FFB4AB; --err-soft:#4A1B17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0C0F26; --card:#151A3D; --ink:#EDEFFA; --ink-2:#A6ACCB; --line:#262C57; --line-2:#38407A;
+  --ai:#F2B63A; --ai-soft:#3A2D0B; --ai-ink:#F6D58E;
+  --out:#3FD3A5; --out-soft:#0E3B31; --out-ink:#9BEBD3;
+  --btn-bg:#EDEFFA; --btn-fg:#0C0F26; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 28px rgba(0,0,0,.35);
+  --err:#FFB4AB; --err-soft:#4A1B17; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.8 var(--f-body);
+  padding-block:0 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:30}
+[hidden]{display:none!important}
+img,video{max-width:100%;display:block}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ai);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin-inline:auto}
+h1,h2,h3,h4{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.5}
+p{margin:0}
+.eyebrow{font:700 .8rem/1.4 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--line);
+  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px))}
+.bar__in{max-width:1180px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:800 1.08rem/1.2 var(--f-display)}
+.brand__mark{width:34px;height:34px;border-radius:10px;background:var(--btn-bg);color:var(--btn-fg);display:grid;place-items:center;font:800 1rem/1 var(--f-display)}
+.brand small{display:block;font:500 .78rem/1.2 var(--f-body);color:var(--ink-2);letter-spacing:.04em}
+.nav{display:none;gap:4px}
+.nav a{text-decoration:none;font-weight:500;font-size:.98rem;padding:6px 12px;border-radius:999px;color:var(--ink-2)}
+.nav a:hover,.nav a[aria-current="page"]{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+@media (min-width:980px){.nav{display:flex}}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;text-decoration:none;
+  background:var(--btn-bg);color:var(--btn-fg);font:700 1rem/1.5 var(--f-body);padding:12px 22px;border-radius:999px;min-height:46px;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(18,22,58,.22)}
+.btn--ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line-2)}
+.btn--ghost:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn--sm{padding:8px 16px;min-height:40px;font-size:.96rem}
+
+/* hero */
+.hero{padding-block:36px 8px;display:grid;gap:28px}
+.hero h1{font-size:clamp(1.85rem,5.2vw,3.35rem);font-weight:800;line-height:1.6;max-width:22ch}
+.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--ai-soft) 62%);padding-inline:.1em}
+.hero p.lead{max-width:60ch;color:var(--ink-2);font-size:1.08rem}
+.hero__cta{display:flex;flex-wrap:wrap;gap:10px}
+
+/* the transformation component */
+.flow{display:grid;grid-template-columns:minmax(0,1fr);gap:0;align-items:stretch}
+@media (min-width:860px){.flow{grid-template-columns:minmax(0,1fr) 52px minmax(0,.85fr) 52px minmax(0,1fr)}}
+.node{background:var(--card);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:inset 0 0 0 1.5px var(--line)}
+.node--in{box-shadow:inset 0 0 0 1.5px var(--line-2)}
+.node--ai{background:var(--ai-soft);box-shadow:inset 0 0 0 1.5px var(--ai)}
+.node--out{background:var(--out-soft);box-shadow:inset 0 0 0 1.5px var(--out)}
+.tag{align-self:flex-start;font:700 .78rem/1 var(--f-body);letter-spacing:.14em;padding:6px 9px;border-radius:6px;background:var(--ink);color:var(--paper)}
+.node--ai .tag{background:var(--ai);color:#2A1C00}
+.node--out .tag{background:var(--out);color:#fff}
+.node h4{font-size:1.06rem;font-weight:700}
+.node--ai h4{color:var(--ai-ink)}.node--out h4{color:var(--out-ink)}
+.node p.t{color:var(--ink-2);font-size:1rem;line-height:1.85}
+.node--ai p.t,.node--ai li{color:var(--ai-ink)}
+.node--out p.t{color:var(--out-ink)}
+.steps{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:1rem;line-height:1.8}
+.steps li{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:start}
+.steps li::before{content:"";width:22px;height:22px;border-radius:50%;background:var(--ai);margin-top:3px;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z'/%3E%3C/svg%3E") center/70% no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z'/%3E%3C/svg%3E") center/70% no-repeat}
+.link{display:grid;place-items:center;height:44px;color:var(--ink-2)}
+.link svg{width:44px;height:14px;transform:rotate(90deg)}
+@media (min-width:860px){.link{height:auto}.link svg{transform:none}}
+.link line{stroke:currentColor;stroke-width:2;stroke-dasharray:5 5;animation:dash 1s linear infinite}
+.link path{fill:currentColor}
+@keyframes dash{to{stroke-dashoffset:-10}}
+@media (prefers-reduced-motion:reduce){.link line{animation:none}html{scroll-behavior:auto}}
+
+/* media */
+.shot{margin:0;display:grid;gap:8px}
+.shot img{width:100%;height:auto;border-radius:12px;box-shadow:inset 0 0 0 1px var(--line);background:var(--card)}
+.shot figcaption{font-size:.92rem;line-height:1.75;color:var(--ink-2)}
+.shot--phone{max-width:300px;margin-inline:auto;width:100%}
+.vid{position:relative;border-radius:14px;overflow:hidden;background:#000;width:100%;aspect-ratio:9/16;max-width:100%}
+.vid--wide{aspect-ratio:16/9}
+.vid--cap{max-width:300px;margin-inline:auto}
+.vid video{width:100%;height:100%;object-fit:cover;background:#000}
+.vid__btn{position:absolute;inset:0;border:0;background:linear-gradient(transparent 55%,rgba(0,0,0,.55));cursor:pointer;display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding:12px;color:#fff;text-align:left}
+.vid__btn:focus-visible{outline-offset:-4px}
+.vid__play{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);transition:transform .15s}
+.vid__btn:hover .vid__play{transform:translate(-50%,-50%) scale(1.08)}
+.vid__play::after{content:"";border-left:16px solid #12163A;border-block:10px solid transparent;margin-left:4px}
+.vid__lbl{font:500 .86rem/1.4 var(--f-body)}
+.vid__dur{font:700 .8rem/1 var(--f-body);background:rgba(0,0,0,.6);padding:5px 7px;border-radius:6px;font-variant-numeric:tabular-nums}
+.vid.is-playing .vid__btn{display:none}
+.vwrap{display:grid;gap:8px}
+.vwrap > p{font-size:.92rem;color:var(--ink-2);line-height:1.7}
+
+/* how it works */
+.how{display:grid;gap:12px;margin-top:8px}
+@media (min-width:760px){.how{grid-template-columns:repeat(3,1fr)}}
+.how div{padding:18px 18px 18px;border-top:3px solid var(--ink)}
+.how div:nth-child(2){border-color:var(--ai)}.how div:nth-child(3){border-color:var(--out)}
+.how h3{font-size:1.1rem;font-weight:800}
+.how p{color:var(--ink-2);font-size:1rem}
+
+/* category cards */
+.cats{display:grid;gap:18px;margin-top:18px}
+@media (min-width:820px){.cats{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}}
+.cat{display:flex;flex-direction:column;background:var(--card);border-radius:22px;overflow:hidden;text-decoration:none;box-shadow:var(--shadow);transition:transform .2s}
+.cat:hover{transform:translateY(-3px)}
+.cat__media{position:relative;display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:3px;height:clamp(210px,26vw,290px);overflow:hidden;background:var(--line)}
+.cat__media img{width:100%;height:100%;min-height:0;object-fit:cover;object-position:top}
+.cat__media img:first-child{grid-row:1 / span 2}
+.cat__media--2{grid-template-columns:1fr 1fr}
+.cat__media--2 img{grid-row:1 / span 2}
+.cat__no{position:absolute;left:12px;top:12px;font:800 .98rem/1 var(--f-display);background:var(--card);color:var(--ink);padding:8px 11px;border-radius:9px;font-variant-numeric:tabular-nums}
+.cat__body{padding:20px 22px 24px;display:grid;gap:12px;flex:1;align-content:start}
+.cat__body h2{font-size:1.5rem;font-weight:800;line-height:1.35}
+.cat__body p{color:var(--ink-2);font-size:1rem}
+.cat__foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:4px}
+.price-pill{font:700 .86rem/1.4 var(--f-body);background:var(--ai-soft);color:var(--ai-ink);padding:5px 12px;border-radius:999px;font-variant-numeric:tabular-nums}
+.cat .btn{pointer-events:none}
+
+/* category page */
+.crumb{display:inline-flex;gap:6px;align-items:center;font-weight:500;font-size:1rem;color:var(--ink-2);text-decoration:none;padding-block:18px 6px;min-height:44px}
+.crumb:hover{color:var(--ink)}
+.phead{display:grid;gap:12px;padding-block:6px 22px}
+.phead h1{font-size:clamp(1.8rem,4.6vw,3rem);font-weight:800;line-height:1.45}
+.phead p{color:var(--ink-2);max-width:68ch;font-size:1.06rem}
+.phead .price-pill{justify-self:start}
+.svc{background:var(--card);border-radius:24px;padding:22px 18px;display:grid;gap:22px;margin-bottom:22px;box-shadow:var(--shadow)}
+@media (min-width:760px){.svc{padding:30px 30px}}
+.svc__head{display:grid;gap:8px}
+.svc__head h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;line-height:1.4}
+.svc__head p{color:var(--ink-2);max-width:70ch}
+.sub{font:700 .8rem/1.4 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin-bottom:10px}
+.flow__title{font-family:var(--f-display);font-weight:800;font-size:1.12rem;margin-bottom:12px;line-height:1.5}
+.gallery{display:grid;gap:12px}
+@media (min-width:600px){.gallery--2{grid-template-columns:1fr 1fr}.gallery--3{grid-template-columns:repeat(3,1fr)}}
+
+/* package */
+.pkg{display:grid;gap:18px;padding:20px;border-radius:18px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line)}
+@media (min-width:760px){.pkg{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;padding:26px}}
+.pkg__price{font:700 clamp(1.3rem,3vw,1.6rem)/1.35 var(--f-display);font-variant-numeric:tabular-nums}
+.pkg__price small{font:500 .9rem/1.4 var(--f-body);color:var(--ink-2);margin-left:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-block:10px 16px}
+.chip{font:700 .9rem/1.3 var(--f-body);padding:6px 12px;border-radius:999px;background:var(--out-soft);color:var(--out-ink)}
+.chip--ai{background:var(--ai-soft);color:var(--ai-ink)}
+.pkg__note{font-size:.96rem;color:var(--ink-2);margin-top:10px}
+.incl{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.incl li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:1rem}
+.incl li::before{content:"";width:20px;height:20px;border-radius:50%;margin-top:4px;background:var(--out)
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9.5 16.2L5.3 12l-1.4 1.4 5.6 5.6L21 7.5l-1.4-1.4z'/%3E%3C/svg%3E") center/80% no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9.5 16.2L5.3 12l-1.4 1.4 5.6 5.6L21 7.5l-1.4-1.4z'/%3E%3C/svg%3E") center/80% no-repeat}
+
+/* examples */
+.ex{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:600px){.ex{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}}
+.ex .wide{grid-column:1 / -1}
+@media (min-width:600px){.ex .wide{grid-column:span 2}}
+.more{justify-self:start}
+
+/* feature cards (automation list) */
+.fcards{display:grid;gap:14px}
+@media (min-width:760px){.fcards{grid-template-columns:repeat(3,1fr)}}
+.fcard{background:var(--card);border-radius:20px;padding:20px;display:grid;gap:10px;align-content:start;box-shadow:var(--shadow)}
+.fcard h3{font-size:1.1rem;font-weight:800;line-height:1.45}
+.fcard p{font-size:1rem;color:var(--ink-2)}
+.fcard ul{margin:0;padding:0 0 0 1.1em;font-size:.98rem;color:var(--ink-2);line-height:1.8}
+
+/* telegram step sequence */
+.seq{display:grid;gap:14px}
+.seq__row{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:640px}
+.stepn{display:grid;gap:8px;align-content:start}
+.stepn b{font:700 .8rem/1 var(--f-body);letter-spacing:.14em;color:var(--ai-ink);background:var(--ai-soft);padding:6px 9px;border-radius:6px;justify-self:start}
+.stepn img{border-radius:12px;box-shadow:inset 0 0 0 1px var(--line);width:100%;height:auto}
+.scrollx{overflow-x:auto;border-radius:12px}
+.scrollx img{min-width:600px}
+.stepn p{font-size:.92rem;line-height:1.7;color:var(--ink-2)}
+.seq__res{padding:14px 16px;border-radius:14px;background:var(--out-soft);color:var(--out-ink);font-weight:700;box-shadow:inset 0 0 0 1.5px var(--out)}
+@media (min-width:860px){.seq--tg{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);align-items:start}.seq--tg .seq__main{display:grid;gap:14px}}
+
+/* CTA band */
+.cta{display:grid;gap:14px;justify-items:start;padding:26px 22px;border-radius:22px;background:var(--btn-bg);color:var(--btn-fg)}
+.cta h3{font-size:clamp(1.25rem,3vw,1.7rem);font-weight:800;line-height:1.55}
+.cta .btn{background:var(--ai);color:#2A1C00}
+.cta p{opacity:.85;font-size:1rem}
+.nextcats{display:grid;gap:10px;margin-top:26px}
+@media (min-width:700px){.nextcats{grid-template-columns:repeat(3,1fr)}}
+.nextcats a{display:flex;justify-content:space-between;align-items:center;gap:10px;text-decoration:none;padding:14px 18px;border-radius:14px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);font-weight:700}
+.nextcats a:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.nextcats small{color:var(--ink-2);font-weight:500}
+
+/* enquiry */
+.enq{display:grid;gap:26px;padding-block:8px 20px}
+@media (min-width:900px){.enq{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:44px;align-items:start}}
+.form{background:var(--card);border-radius:24px;padding:22px 18px;display:grid;gap:16px;box-shadow:var(--shadow)}
+@media (min-width:600px){.form{padding:30px}}
+.field{display:grid;gap:6px}
+.field label{font-weight:700;font-size:1rem}
+.field small{color:var(--ink-2);font-size:.9rem;line-height:1.6}
+.field input,.field select,.field textarea{width:100%;background:var(--paper);border:1.5px solid var(--line-2);border-radius:12px;padding:12px 14px;min-height:48px;line-height:1.7}
+.field textarea{min-height:140px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:3px solid var(--ai);outline-offset:1px;border-color:var(--ink)}
+.field.bad input,.field.bad textarea{border-color:var(--err)}
+.field .err{color:var(--err);font-size:.9rem;line-height:1.6}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.notice{padding:14px 16px;border-radius:14px;font-size:1rem;line-height:1.8}
+.notice--ok{background:var(--out-soft);color:var(--out-ink);box-shadow:inset 0 0 0 1.5px var(--out)}
+.notice--err{background:var(--err-soft);color:var(--err);box-shadow:inset 0 0 0 1.5px var(--err)}
+.notice pre{margin:10px 0 0;white-space:pre-wrap;font:400 .92rem/1.7 var(--f-body);background:var(--card);color:var(--ink);padding:12px;border-radius:10px;user-select:all}
+.how-list{margin:0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:s}
+.how-list li{display:grid;grid-template-columns:34px 1fr;gap:12px;color:var(--ink-2);counter-increment:s}
+.how-list li::before{content:counter(s);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--ai-soft);color:var(--ai-ink);font:800 1rem/1 var(--f-display)}
+footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;color:var(--ink-2);font-size:.92rem}
+
+.cat__top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px 0}
+.cat__icon{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;background:var(--ai-soft);color:var(--ai-ink)}
+.cat__icon svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cat__icon svg .f{fill:currentColor;stroke:none}
+.cat__top .cat__no{position:static;background:var(--paper);color:var(--ink)}
+@media (min-width:820px){.cats .cat:last-child:nth-child(odd){grid-column:1 / -1}}
+.nextcats{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important}
+.bar .btn{white-space:nowrap;flex:none}
+@media (max-width:599px){.brand{font-size:.92rem;min-width:0}.bar .btn--sm{padding:8px 14px}}
+@media (min-width:760px){.fcards--2{grid-template-columns:repeat(2,1fr)}}
+.svc .fcard{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line)}
+@media (max-width:599px){.cat__top{padding:14px 16px 0}.cat__icon{width:48px;height:48px}}
+/* phones: larger type, tighter spacing */
+@media (max-width:599px){
+  html{font-size:17px}
+  body{padding-bottom:30px}
+  .bar__in{padding-block:8px}
+  .brand small{display:none}
+  .brand__mark{width:32px;height:32px}
+  .hero{padding-block:14px 0;gap:14px}
+  .hero h1{font-size:1.75rem;line-height:1.55}
+  .hero p.lead{font-size:1.04rem}
+  .hero__cta .btn{flex:1 1 auto}
+  .how{gap:4px;margin-top:0}
+  .how div{padding:10px 2px 10px}
+  .cats{gap:14px;margin-top:10px}
+  .cat__media{height:180px}
+  .cat__body{padding:14px 16px 18px;gap:8px}
+  .cat__body h2{font-size:1.3rem}
+  .cat__foot{gap:8px}
+  .phead{padding-block:0 12px;gap:8px}
+  .crumb{padding-block:10px 0}
+  .svc{padding:16px 14px;gap:16px;margin-bottom:14px;border-radius:20px}
+  .svc__head{gap:6px}
+  .svc__head h2{font-size:1.4rem}
+  .flow__title{font-size:1.1rem;margin-bottom:8px}
+  .node{padding:14px;gap:10px;border-radius:16px}
+  .link{height:30px}
+  .vid--cap,.shot--phone{max-width:220px}
+  .pkg{padding:16px;gap:14px;border-radius:16px}
+  .pkg__price{font-size:1.4rem}
+  .chips{margin-block:8px 12px}
+  .ex{gap:10px}
+  .cta{padding:18px 16px;border-radius:18px;gap:12px}
+  .cta .btn,.pkg .btn,.form .btn{width:100%}
+  .fcards{gap:10px}
+  .fcard{padding:16px}
+  .fcard ul[style*="columns"]{columns:1!important}
+  .seq__row{gap:10px}
+  .form{padding:18px 14px;gap:14px}
+  .field input,.field select,.field textarea{font-size:1rem}
+  .nextcats{margin-top:18px;gap:8px}
+  .nextcats a{padding:12px 14px}
+  footer{margin-top:26px}
+  .enq{gap:18px}
+}
+</style>
+</head>
+<body>
+
+<header class="bar"><div class="bar__in">
+  <a class="brand" href="#home" aria-label="Home"><span class="brand__mark">AI</span><span>Pwint AI Digital Services<small>Myanmar · Video · Automation · Data · Web</small></span></a>
+  <nav class="nav" id="nav" aria-label="Services"></nav>
+  <a class="btn btn--sm" href="#enquiry" data-enquire="">ဆွေးနွေးမယ်</a>
+</div></header>
+<main class="wrap" id="app"></main>
+
+<script>
+(function(){
+"use strict";
+/* ---------- config ---------- */
+var ENQUIRY_EMAIL = "pwintsanwork@gmail.com";   // enquiries are sent here
+var VIBER_NUMBER  = "";                          // optional: shown on the enquiry page when filled in
+
+/* ---------- media ---------- */
+var V = {
+ "ad-skincare":{l:"Skincare Product Ad",d:"0:53",r:"p"},
+ "ad-herbal":{l:"Herbal Capsule Product Ad",d:"0:50",r:"p"},
+ "ad-food":{l:"Local Food Ad",d:"0:50",r:"p"},
+ "ad-signboard":{l:"Signboard Installation Timelapse",d:"0:24",r:"w"},
+ "ad-driving":{l:"Driving Lesson Ad",d:"0:29",r:"p"},
+ "ad-driving-school":{l:"Driving School Ad",d:"0:59",r:"w"},
+ "ad-audit-service":{l:"Auditing Service Ad",d:"0:38",r:"p"},
+ "model-presenter":{l:"AI Presenter · Event Stage",d:"0:41",r:"w"},
+ "model-restaurant":{l:"AI Characters · Restaurant Ad",d:"0:30",r:"p"},
+ "walk-property":{l:"Property Walkthrough",d:"1:27",r:"w"},
+ "anim-transition":{l:"Transition & Text Animation",d:"0:40",r:"p"},
+ "anim-text":{l:"Text Animation",d:"0:10",r:"p"},
+ "explain-audit":{l:"Internal Audit Explainer (Burmese)",d:"1:31",r:"p"},
+ "explain-howto":{l:"How-to Explainer · Chocolate Mousse",d:"0:45",r:"p"}
+};
+function vid(id,opt){
+  opt=opt||{}; var m=V[id]; var wide=m.r==="w";
+  var cls="vid"+(wide?" vid--wide":"")+(opt.cap&&!wide?" vid--cap":"");
+  return '<div class="'+cls+'" data-vid>'+
+    '<video preload="none" playsinline poster="'+id+'.jpg" src="'+id+'.mp4" aria-label="'+m.l+'"></video>'+
+    '<button class="vid__btn" type="button" aria-label="Play: '+m.l+'"><span class="vid__play"></span><span class="vid__lbl">'+m.l+'</span><span class="vid__dur">'+m.d+'</span></button></div>';
+}
+function shot(src,alt,cap,cls){
+  return '<figure class="shot'+(cls?' '+cls:'')+'"><img src="'+src+'" alt="'+alt+'" loading="lazy">'+(cap?'<figcaption>'+cap+'</figcaption>':'')+'</figure>';
+}
+
+/* ---------- flow component: INPUT > AI > OUTPUT ---------- */
+var ARROW='<div class="link" aria-hidden="true"><svg viewBox="0 0 44 14"><line x1="2" y1="7" x2="34" y2="7"/><path d="M33 1l10 6-10 6z"/></svg></div>';
+function node(kind,tag,title,inner){return '<div class="node node--'+kind+'"><span class="tag">'+tag+'</span><h4>'+title+'</h4>'+inner+'</div>';}
+function flow(f){
+  var ai='<ul class="steps">'+f.steps.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ul>';
+  return '<div class="flow">'+
+    node("in","INPUT","သင်ပေးရမယ့်အရာ",f.inp)+ARROW+
+    node("ai","AI PROCESS","AI နဲ့ ပြောင်းလဲပေးခြင်း",ai)+ARROW+
+    node("out","OUTPUT","သင်ရရှိမယ့် Result",f.out)+'</div>';
+}
+function t(s){return '<p class="t">'+s+'</p>';}
+
+/* ---------- package ---------- */
+function pkg(p){
+  var chips=(p.chips||[]).map(function(c,i){return '<span class="chip'+(i?' chip--ai':'')+'">'+c+'</span>';}).join('');
+  var incl=p.inc?'<div><div class="sub">ပါဝင်သည်များ</div><ul class="incl">'+p.inc.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul></div>':'';
+  return '<div class="pkg"><div><div class="sub">Package</div><div class="pkg__price">'+p.price+(p.per?'<small>'+p.per+'</small>':'')+'</div>'+
+    (chips?'<div class="chips">'+chips+'</div>':'')+(p.note?'<p class="pkg__note">'+p.note+'</p>':'')+
+    '<a class="btn" href="#enquiry" data-enquire="'+p.svc+'">'+(p.cta||"ဒီ Package ကို ဆွေးနွေးမယ် →")+'</a></div>'+incl+'</div>';
+}
+function cta(svc,title){
+  return '<div class="cta"><h3>'+(title||"ဒီလို Content / Solution လိုချင်ပါသလား?")+'</h3><a class="btn" href="#enquiry" data-enquire="'+svc+'">Project ဆွေးနွေးမယ် →</a></div>';
+}
+
+/* ---------- services ---------- */
+function svcAd(){
+  var first=["ad-skincare","ad-herbal","ad-food"], rest=["ad-driving-school","ad-signboard","ad-driving"];
+  return '<section class="svc" id="s-ad"><div class="svc__head"><span class="eyebrow">AI Ad Video</span><h2>AI Ad Video</h2>'+
+   '<p>Product နဲ့ Service တွေအတွက် Facebook၊ TikTok နဲ့ Social Media Advertising တွေမှာ အသုံးပြုနိုင်တဲ့ AI ကြော်ငြာ Video Short တွေ ဖန်တီးပေးပါတယ်။</p></div>'+
+   '<div><div class="flow__title">Script ကနေ ကြော်ငြာ Video အဖြစ်</div>'+flow({
+     inp: t("Product ဓာတ်ပုံ + အခြေခံအချက်အလက်၊ ဒါမှမဟုတ် ပြောချင်တဲ့ Script")+shot("storyboard.jpg","Script and scene prompts for an auditing service ad","ဥပမာ - Script နဲ့ Scene တစ်ခုချင်းစီအတွက် Prompt"),
+     steps:["AI Visual ဖန်တီး","Script နဲ့ အသံ ပြင်ဆင်","Editing လုပ်ပြီး Social Media Format ထုတ်"],
+     out: t("စက္ကန့် ၂၀–၅၀ Social Media ကြော်ငြာ Video")+vid("ad-audit-service",{cap:1})
+   })+'</div>'+
+   pkg({svc:"ad",price:"250,000 MMK",per:"/ လ",chips:["30 videos / လ","စက္ကန့် ၂၀–၅၀"],inc:[
+     "တစ်လ Short Video ၃၀ ခုအထိ","Video တစ်ခုလျှင် စက္ကန့် ၂၀–၅၀","AI နဲ့ ဖန်တီးထားတဲ့ Visual များ","Product / Service ကြော်ငြာ Content","Social Media အတွက် အဆင်သင့် Format","အခြေခံ Editing"]})+
+   '<div><div class="sub">Portfolio Examples</div><div class="ex" id="ex-ad">'+first.map(function(i){return '<div class="vwrap">'+vid(i)+'</div>';}).join('')+
+   rest.map(function(i){return '<div class="vwrap" data-more hidden>'+vid(i)+'</div>';}).join('')+'</div>'+
+   '<button class="btn btn--ghost btn--sm more" type="button" data-showmore="ex-ad" style="margin-top:14px">ဥပမာ ထပ်ကြည့်မယ် ↓</button></div>'+
+   cta("ad")+'</section>';
+}
+function svcModel(){
+  return '<section class="svc" id="s-model"><div class="svc__head"><span class="eyebrow">AI Model / Character Video</span><h2>AI Model / Character Video</h2>'+
+   '<p>AI Model၊ Virtual Presenter၊ AI Character တွေကို အသုံးပြုပြီး Product၊ Real Estate၊ Service နဲ့ Brand Promotion Video တွေ ဖန်တီးပေးပါတယ်။</p></div>'+
+   '<div><div class="flow__title">Brand တစ်ခုကို AI Character နဲ့ ပြောပြမယ်</div>'+flow({
+     inp: t("Brand / Product အချက်အလက်၊ လိုချင်တဲ့ Character ပုံစံနဲ့ ပြောချင်တဲ့ Message"),
+     steps:["AI Model / Character ဖန်တီး","Product / Service ကို Video ထဲ ပေါင်းထည့်","Short-form Video Editing"],
+     out: t("စက္ကန့် ၂၀–၅၀ Brand Promotion Video")+vid("model-restaurant",{cap:1})
+   })+'</div>'+
+   pkg({svc:"model",price:"300,000 MMK",per:"/ လ",chips:["20 videos / လ","စက္ကန့် ၂၀–၅၀"],inc:[
+     "တစ်လ Video ၂၀ ခုအထိ","Video တစ်ခုလျှင် စက္ကန့် ၂၀–၅၀","AI Model / Character ဖန်တီးပေးခြင်း","Product / Service ကို Video ထဲ ပေါင်းထည့်ခြင်း","Short-form Video Editing"]})+
+   '<div><div class="sub">Portfolio Examples</div><div class="ex">'+
+   '<div class="vwrap wide">'+vid("model-presenter")+'</div>'+
+   '<div class="vwrap">'+shot("model-input.jpg","AI generated model wearing a branded polo shirt","AI နဲ့ ဖန်တီးထားတဲ့ Model ပုံ")+'</div></div></div>'+
+   cta("model")+'</section>';
+}
+function svcWalk(){
+  return '<section class="svc" id="s-walk"><div class="svc__head"><span class="eyebrow">AI Walkthrough Video</span><h2>AI Walkthrough Video</h2>'+
+   '<p>Website၊ App၊ Product၊ Property သို့မဟုတ် Service အသုံးပြုပုံကို ရှင်းလင်းလွယ်ကူစွာ ပြသနိုင်တဲ့ Walkthrough Video တွေ ဖန်တီးပေးပါတယ်။</p></div>'+
+   '<div><div class="flow__title">ဓာတ်ပုံတစ်ပုံကနေ Video အဖြစ်</div>'+flow({
+     inp: shot("property-input.jpg","Original property listing photo of a furnished condo living room","မူရင်း Property ဓာတ်ပုံ"),
+     steps:["ဓာတ်ပုံတွေကို Scene အလိုက် စီစဉ်","ကင်မရာ လှုပ်ရှားမှုနဲ့ Video ဖန်တီး","Step-by-step ပြသပုံ Edit လုပ်"],
+     out: t("Social Media အတွက် အဆင်သင့် Walkthrough Video")+vid("walk-property")
+   })+'</div>'+
+   pkg({svc:"walk",price:"300,000 MMK",per:"/ လ",chips:["30 videos / လ","စက္ကန့် ၂၀–၅၀"],inc:[
+     "တစ်လ Video ၃၀ ခုအထိ","Video တစ်ခုလျှင် စက္ကန့် ၂၀–၅၀","Step-by-step ရှင်းလင်းတဲ့ Visual","Screen / Product ပြသမှု","Short-form Editing"]})+
+   cta("walk")+'</section>';
+}
+function svcAnim(){
+  return '<section class="svc" id="s-anim"><div class="svc__head"><span class="eyebrow">AI Animation</span><h2>AI Animation</h2>'+
+   '<p>Animation၊ Illustration နဲ့ Motion Visual တွေကို အသုံးပြုပြီး Entertainment၊ Social Media နဲ့ Creative Content တွေအတွက် AI Animation Video တွေ ဖန်တီးပေးပါတယ်။</p></div>'+
+   '<div><div class="flow__title">Idea ကနေ Motion Content အဖြစ်</div>'+flow({
+     inp: t("Idea၊ Script၊ ဒါမှမဟုတ် Animation လုပ်ချင်တဲ့ ပုံ / Video"),
+     steps:["Motion Visual နဲ့ Text Animation ဒီဇိုင်း","AI နဲ့ Animation ဖန်တီး","Music၊ Sound ထည့်ပြီး Final Edit"],
+     out: t("စက္ကန့် ၂၀–၅၀ Animation Video")+vid("anim-text",{cap:1})
+   })+'</div>'+
+   pkg({svc:"anim",price:"500,000 MMK",chips:["Short video · စက္ကန့် ၂၀–၅၀"]})+
+   '<div><div class="sub">Portfolio Examples</div><div class="ex"><div class="vwrap">'+vid("anim-transition")+'</div></div></div>'+
+   cta("anim")+'</section>';
+}
+function svcExplain(){
+  return '<section class="svc" id="s-explain"><div class="svc__head"><span class="eyebrow">AI Explainer Video</span><h2>AI Explainer Video</h2>'+
+   '<p>လုပ်ငန်း၊ Product၊ Service၊ Knowledge Sharing နဲ့ Educational Content တွေကို ရိုးရှင်းလွယ်ကူစွာ နားလည်နိုင်အောင် AI Explainer Video အဖြစ် ဖန်တီးပေးပါတယ်။</p></div>'+
+   '<div><div class="flow__title">ရှုပ်ထွေးတဲ့ အကြောင်းအရာကို လွယ်လွယ်ရှင်းပြမယ်</div>'+flow({
+     inp: t("ရှင်းပြချင်တဲ့ အကြောင်းအရာ၊ Knowledge၊ ဒါမှမဟုတ် Script"),
+     steps:["အကြောင်းအရာကို Scene တွေအဖြစ် ခွဲပြီး Script ရေး","AI Visual၊ Animation နဲ့ မြန်မာလို စာတန်းထိုး","အသံထည့်ပြီး Final Edit"],
+     out: t("နားလည်လွယ်တဲ့ Explainer Video")+vid("explain-audit",{cap:1})
+   })+'</div>'+
+   pkg({svc:"explain",price:"300,000 MMK",chips:["Short video · စက္ကန့် ၂၀–၅၀"]})+
+   '<div><div class="sub">Portfolio Examples</div><div class="ex"><div class="vwrap">'+vid("explain-howto")+'</div></div></div>'+
+   cta("explain")+'</section>';
+}
+
+function svcTelegram(){
+  return '<section class="svc" id="s-bot"><div class="svc__head"><span class="eyebrow">Telegram Business Bot</span><h2>Telegram Business Bot</h2>'+
+   '<p>Telegram ထဲကနေပဲ Data စစ်ဆေးခြင်း၊ Data ထည့်သွင်းခြင်းနဲ့ စာရင်းအင်းလုပ်ငန်းတွေကို အလိုအလျောက် လုပ်ဆောင်ပေးတဲ့ Bot ဖန်တီးပေးပါတယ်။</p></div>'+
+   '<div><div class="flow__title">ကိုယ်တိုင်လုပ်နေရတဲ့ စာရင်းအလုပ်ကို Bot က လုပ်ပေးမယ်</div>'+
+   '<div class="seq seq--tg"><div class="seq__main"><div class="seq__row">'+
+    '<div class="stepn"><b>STEP 01</b><img src="tg-menu.jpg" alt="Telegram balance sheet bot command menu" loading="lazy"><p>/start နဲ့ စတင်ပြီး /add၊ /list၊ /balance၊ /export Command တွေ ရွေးသုံး</p></div>'+
+    '<div class="stepn"><b>STEP 02</b><img src="tg-balance.jpg" alt="Telegram bot saving an entry and showing the balance sheet" loading="lazy"><p>Entry သိမ်းပြီး /balance နဲ့ Balance ညီမညီ ချက်ချင်းစစ်</p></div></div>'+
+    '<div class="stepn"><b>STEP 03</b><div class="scrollx"><img src="sheet-row.jpg" alt="Google Sheet row created automatically by the bot" loading="lazy"></div><p>Google Sheet ထဲမှာ မှတ်တမ်း အလိုအလျောက် ဝင်သွားတယ်</p></div></div>'+
+    '<div class="seq__res">RESULT · Telegram ထဲကနေပဲ Data Entry နဲ့ Balance Check လုပ်နိုင်ပြီး Excel / Sheet အဖြစ် ထုတ်ယူနိုင်တယ်</div></div>'+
+   '</div>'+
+   '<div class="fcards" style="grid-template-columns:1fr"><div class="fcard"><div class="sub" style="margin:0">Telegram Bot နဲ့ လုပ်ပေးနိုင်တာတွေ</div><ul style="columns:2;column-gap:28px"><li>Data checking</li><li>Data entry</li><li>Bookkeeping</li><li>Customer requests</li><li>Automated notifications</li><li>Contract generation</li><li>Invoice generation</li></ul></div></div>'+
+   cta("auto")+'</section>';
+}
+function svcChatbot(){
+  return '<section class="svc" id="s-chat"><div class="svc__head"><span class="eyebrow">AI Chatbot Demo</span><h2>Customer Request တွေကို Chatbot က ဖြေပေးမယ်</h2>'+
+   '<p>Customer တွေရဲ့ မေးခွန်းနဲ့ Request တွေကို Button၊ Menu နဲ့ ချက်ချင်း ပြန်ဖြေပေးတဲ့ Chatbot ဥပမာ။ ခရီးစဉ်ရွေးချယ်ရာမှာ ကူညီပေးတဲ့ Travel Assistant အဖြစ် ဖန်တီးထားပါတယ်။</p></div>'+
+   '<div class="gallery gallery--2" style="align-items:start">'+shot("chatbot-travel.jpg","Burmese travel assistant chatbot suggesting a Bangkok and Pattaya itinerary","Chatbot က နိုင်ငံ၊ မြို့၊ ရက်အရေအတွက်ကို မေးပြီး ခရီးစဉ် အကြံပြုပေးပုံ","shot--phone")+
+   '<div class="fcard"><h3>ဘာတွေ လုပ်ပေးနိုင်လဲ</h3><ul><li>မေးခွန်းတွေကို Button နဲ့ ရွေးခိုင်းပြီး ဖြေပေးမယ်</li><li>Customer လိုအပ်ချက်ကို စုစည်းမယ်</li><li>Messenger၊ Telegram စတဲ့ Chat App တွေမှာ အသုံးပြုနိုင်မယ်</li></ul></div></div>'+
+   cta("auto")+'</section>';
+}
+function otherAuto(){
+  var items=[
+   ["Idea Collection & Management","Team ထံကရတဲ့ Idea၊ Customer Feedback နဲ့ Request တွေကို တစ်နေရာတည်းမှာ အလိုအလျောက် စုစည်းပေးပါတယ်။",["Team ideas","Customer feedback","Requests","Lead collection","Automatic organization"]],
+   ["Marketing Automation","Content ပြင်ဆင်ခြင်းကနေ Newsletter ပို့ခြင်းအထိ ထပ်ခါထပ်ခါလုပ်ရတဲ့ Marketing အလုပ်တွေကို Automation လုပ်ပေးပါတယ်။",["Content idea generation","Content preparation","Newsletter sending","Customer updates","Marketing data updates","Recurring workflows"]],
+   ["Document Automation","Contract၊ Invoice၊ Receipt လို Business Document တွေကို အလိုအလျောက် ထုတ်ပေးပါတယ်။",["Contracts","Invoices","Receipts","Business documents"]]];
+  return '<div class="fcards" style="margin-bottom:22px">'+items.map(function(i){
+    return '<div class="fcard"><h3>'+i[0]+'</h3><p>'+i[1]+'</p><ul>'+i[2].map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';}).join('')+'</div>';
+}
+function svcResearch(){
+  return '<section class="svc" id="s-res"><div class="svc__head"><span class="eyebrow">Business Contact Research</span><h2>Business Contact Research</h2>'+
+   '<p>လုပ်ငန်းတွေ၊ ဖောက်သည်ဖြစ်နိုင်သူတွေရဲ့ ဆက်သွယ်ရန်အချက်အလက်တွေကို AI နဲ့ ရှာဖွေစုစည်းပြီး အသုံးပြုလို့ရတဲ့ Sheet အဖြစ် ပြင်ဆင်ပေးပါတယ်။</p></div>'+
+   '<div><div class="flow__title">ရှာဖွေစရာ Information ကနေ စုစည်းပြီးသား Data အဖြစ်</div>'+flow({
+     inp: t("ရှာချင်တဲ့ လုပ်ငန်းအမျိုးအစား၊ မြို့ / နိုင်ငံ၊ ဘယ်လို Customer မျိုးလိုချင်လဲဆိုတဲ့ အချက်"),
+     steps:["AI နဲ့ လုပ်ငန်းတွေကို ရှာဖွေ၊ စစ်ထုတ်","Rating၊ Review စတာတွေနဲ့ ဦးစားပေးအဆင့် သတ်မှတ်","ဆက်သွယ်ရန်အချက်အလက် စုစည်းပြီး Sheet ထုတ်ပေး"],
+     out: t("Priority A / B / C ခွဲပေးထားတဲ့ Lead List နဲ့ Summary")+shot("data-summary.jpg","Summary sheet of business leads by country and priority","Country အလိုက် Summary နဲ့ ဖတ်ပုံညွှန်ကြားချက်")
+   })+'</div>'+
+   '<div><div class="sub">Result Example</div>'+shot("data-leads.jpg","Lead list spreadsheet with business, sector, rating and review count","Lead List ဥပမာ (ဆက်သွယ်ရန် နံပါတ်နဲ့ Link တွေကို ဖုံးထားပါတယ်)")+'</div>'+
+   '<div><div class="sub">ပါဝင်နိုင်တာတွေ</div><ul class="incl"><li>Business contacts</li><li>Potential customers</li></ul></div>'+
+   cta("research")+'</section>';
+}
+function svcWeb(){
+  return '<section class="svc" id="s-web"><div class="svc__head"><span class="eyebrow">AI Web App &amp; Website</span><h2>AI Web App &amp; Website</h2>'+
+   '<p>Idea ကနေ အသုံးပြုလို့ရတဲ့ Website၊ Web App အဖြစ် Design နဲ့ Development လုပ်ပေးပါတယ်။ မြန်မာ / English နှစ်ဘာသာနဲ့ AI Feature တွေ ထည့်သွင်းနိုင်ပါတယ်။</p></div>'+
+   '<div><div class="flow__title">Idea ကနေ အလုပ်လုပ်တဲ့ Website / App အဖြစ်</div>'+flow({
+     inp: t("Idea၊ လိုချင်တဲ့ Feature၊ Reference ဒါမှမဟုတ် ပြောပြချက်"),
+     steps:["UI Design","Frontend နဲ့ AI Feature Development","စမ်းသပ်ပြီး ပြင်ဆင်"],
+     out: t("အသုံးပြုလို့ရတဲ့ Website / Web App")+shot("web-interview.jpg","THANDAR AI Interview Coach web app","THANDAR — AI Interview Coach (အသံနဲ့ ဖြေဆိုတဲ့ အင်တာဗျူး လေ့ကျင့်ရေး App)")
+   })+'</div>'+
+   '<div><div class="sub">Portfolio Examples</div><div class="gallery gallery--2">'+
+   shot("web-thai-letters.jpg","Thai consonant learning page with Burmese explanations","Siri Thai Language — ထိုင်းအက္ခရာ သင်ကြားရေး")+
+   shot("web-thai-lessons.jpg","Thai language lesson list with progress","Siri Thai Language — သင်ခန်းစာများ နဲ့ ရမှတ်")+'</div></div>'+
+   pkg({svc:"web",price:"စျေးနှုန်း ဆွေးနွေးရန်",note:"Project အကျယ်အဝန်းနဲ့ လိုအပ်ချက်အပေါ်မူတည်ပြီး စျေးနှုန်း သတ်မှတ်ပေးပါမယ်။",cta:"စျေးနှုန်း ဆွေးနွေးမယ် →",
+     inc:["Responsive Website / Web App","မြန်မာ / English Interface","AI Feature (Voice၊ Chat) ထည့်သွင်းမှု"]})+
+   cta("web")+'</section>';
+}
+
+function trainCard(id,title,blurb,items){
+  return '<div class="fcard"><span class="eyebrow">Training</span><h3>'+title+'</h3><p>'+blurb+'</p><ul>'+items.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul><a class="btn btn--sm" href="#enquiry" data-enquire="'+id+'" style="justify-self:start;margin-top:6px">ဒီသင်တန်း ဆွေးနွေးမယ် →</a></div>';
+}
+function svcTraining(){
+  return '<section class="svc" id="s-train"><div class="svc__head"><span class="eyebrow">AI Training</span><h2>ကိုယ်တိုင် လုပ်တတ်အောင် သင်ပေးမယ်</h2>'+
+   '<p>သင့်လုပ်ငန်း၊ သင့်အလုပ်အတွက် လိုအပ်တဲ့ AI Skill တွေကို သင်တန်းသားရဲ့ အဆင့်နဲ့ လိုအပ်ချက်ကိုက်အောင် သင်ကြားပေးပါတယ်။</p></div>'+
+   '<div class="fcards fcards--2">'+
+   trainCard("train-video","AI Video Training","AI နဲ့ Short Video ကို ကိုယ်တိုင် ဖန်တီးနည်း သင်ကြားပေးပါတယ်။",["Script နဲ့ Scene ပြင်ဆင်ခြင်း","AI Visual နဲ့ Video ဖန်တီးခြင်း","Editing နဲ့ Social Media Format ထုတ်ခြင်း"])+
+   trainCard("train-research","AI Research Training","AI နဲ့ Information ရှာဖွေစုစည်းပြီး အသုံးပြုလို့ရတဲ့ Data အဖြစ် ပြင်ဆင်နည်း သင်ကြားပေးပါတယ်။",["AI နဲ့ ရှာဖွေစစ်ထုတ်ခြင်း","Data ကို Sheet အဖြစ် စနစ်တကျ စုစည်းခြင်း","Business Research နဲ့ Lead ရှာဖွေခြင်း"])+
+   trainCard("train-workflow","AI Workflow Setup Training","နေ့စဉ်အလုပ်တွေကို AI နဲ့ Automation လုပ်ဖို့ Workflow တည်ဆောက်နည်း သင်ကြားပေးပါတယ်။",["ထပ်ခါထပ်ခါလုပ်ရတဲ့ အလုပ်တွေကို ရှာဖွေခြင်း","Telegram Bot နဲ့ Automation Workflow တည်ဆောက်ခြင်း","စမ်းသပ်ပြီး ပြင်ဆင်အသုံးပြုခြင်း"])+
+   trainCard("train-web","Website Development Training","AI ကို အသုံးပြုပြီး Website ကို Design ကနေ Publish အထိ ကိုယ်တိုင် ဖန်တီးနည်း သင်ကြားပေးပါတယ်။",["Website Idea နဲ့ Layout စီစဉ်ခြင်း","AI နဲ့ Design နဲ့ Code ရေးခြင်း","Publish လုပ်ပြီး ပြင်ဆင်ခြင်း"])+
+   '</div>'+cta("train-video","သင်တန်းတက်ချင်ပါသလား?")+'</section>';
+}
+
+/* ---------- categories ---------- */
+var CATS=[
+ {id:"video",no:"01",title:"AI Video Creation",short:"AI Video",
+  desc:"လုပ်ငန်း၊ Product၊ Service၊ Real Estate နဲ့ Social Media အတွက် AI နည်းပညာအသုံးပြုပြီး Short Video တွေ ဖန်တီးပေးပါတယ်။",
+  price:"250,000 MMK မှ စတင်သည်",cover:["ad-skincare.jpg","model-restaurant.jpg","explain-audit.jpg"],
+  note:"Short-form Video · စက္ကန့် ၂၀–၅၀",
+  render:function(){return svcAd()+svcModel()+svcWalk()+svcAnim()+svcExplain();}},
+ {id:"automation",no:"02",title:"AI Business Automation",short:"Automation",
+  desc:"နေ့စဉ် ထပ်ခါထပ်ခါလုပ်နေရတဲ့ Business Tasks တွေကို AI နဲ့ Automation ပြုလုပ်ပြီး အချိန်နဲ့ လုပ်အားကို သက်သာစေဖို့ ကူညီပေးပါတယ်။",
+  price:"300,000 MMK မှ စတင်သည်",cover:["tg-balance.jpg","chatbot-travel.jpg","sheet-row.jpg"],
+  render:function(){return svcTelegram()+otherAuto()+svcChatbot()+
+    '<section class="svc"><div class="sub" style="margin:0">Package</div>'+pkg({svc:"auto",price:"300,000 MMK",per:"မှ စတင်သည်",note:"Project လိုအပ်ချက်အပေါ်မူတည်ပြီး စျေးနှုန်း ပြောင်းလဲနိုင်ပါတယ်။",cta:"Automation အကြောင်း ဆွေးနွေးမယ် →"})+'</section>';}},
+ {id:"research",no:"03",title:"AI Research & Data",short:"Research & Data",
+  desc:"လုပ်ငန်းအတွက် လိုအပ်တဲ့ Information နဲ့ Data တွေကို AI နဲ့ မြန်မြန်ရှာဖွေ၊ စုစည်းပြီး အသုံးပြုလို့ရတဲ့ပုံစံနဲ့ ပြင်ဆင်ပေးပါတယ်။",
+  price:"500,000 MMK မှ စတင်သည်",cover:["data-summary.jpg","data-leads.jpg"],
+  render:function(){return svcResearch()+'<section class="svc"><div class="sub" style="margin:0">Package</div>'+pkg({svc:"research",price:"500,000 MMK",per:"မှ စတင်သည်",cta:"Research အကြောင်း ဆွေးနွေးမယ် →"})+'</section>';}},
+ {id:"web",no:"04",title:"AI Website & App Development",short:"Website & App",
+  desc:"Business Website၊ Web App နဲ့ AI Tool တွေကို Idea ကနေ အသုံးပြုလို့ရတဲ့ Digital Product အဖြစ် ဖန်တီးပေးပါတယ်။",
+  price:"စျေးနှုန်း ဆွေးနွေးရန်",cover:["web-interview.jpg","web-thai-letters.jpg","web-thai-lessons.jpg"],
+  render:function(){return svcWeb();}},
+ {id:"training",no:"05",title:"AI Training",short:"Training",
+  desc:"AI Video၊ AI Research၊ AI Workflow Setup နဲ့ Website Development တို့ကို ကိုယ်တိုင် လုပ်တတ်အောင် လက်တွေ့ကျကျ သင်ကြားပေးပါတယ်။",
+  price:"စျေးနှုန်း ဆွေးနွေးရန်",render:function(){return svcTraining();}}
+];
+var ICONS={
+ video:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path class="f" d="M10 9.2v5.6l4.8-2.8z"/></svg>',
+ automation:'<svg viewBox="0 0 24 24"><path d="M13 2.5L4.5 13.5h6.5l-1 8 8.5-11H12z"/></svg>',
+ research:'<svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20.5 20.5l-5.4-5.4M8 12.5v-2M10.5 12.5V8M13 12.5v-3"/></svg>',
+ web:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M8.5 13.5L6.5 15.5l2 2M15.5 13.5l2 2-2 2"/></svg>',
+ training:'<svg viewBox="0 0 24 24"><path d="M2.5 9L12 4.5 21.5 9 12 13.5z"/><path d="M6.5 11.3v4.4c0 1.4 2.5 2.8 5.5 2.8s5.5-1.4 5.5-2.8v-4.4M21.5 9v5"/></svg>'};
+var SERVICES=[
+ ["ad","AI Ad Video — 250,000 MMK / လ"],["model","AI Model / Character Video — 300,000 MMK / လ"],["walk","AI Walkthrough Video — 300,000 MMK / လ"],
+ ["anim","AI Animation — 500,000 MMK"],["explain","AI Explainer Video — 300,000 MMK"],["auto","AI Business Automation — 300,000 MMK မှ"],
+ ["research","AI Research & Data — 500,000 MMK မှ"],["web","AI Website & App Development"],["train-video","AI Video Training"],["train-research","AI Research Training"],["train-workflow","AI Workflow Setup Training"],["train-web","Website Development Training"],["other","အခြား / မသေချာသေးပါ"]];
+var selected="";
+
+/* ---------- views ---------- */
+function home(){
+  var cards=CATS.map(function(c){
+    return '<a class="cat" href="#'+c.id+'"><div class="cat__top"><span class="cat__icon" aria-hidden="true">'+ICONS[c.id]+'</span><span class="cat__no">'+c.no+'</span></div>'+
+      '<div class="cat__body"><h2>'+c.title+'</h2><p>'+c.desc+'</p><div class="cat__foot"><span class="price-pill">'+c.price+'</span><span class="btn btn--sm">View Services →</span></div></div></a>';}).join('');
+  return '<section class="hero"><div><span class="eyebrow">Pwint AI Digital Services</span></div>'+
+   '<h1>AI နည်းပညာနဲ့ သင့်လုပ်ငန်းရဲ့ <em>Marketing</em> နဲ့ လုပ်ငန်းလည်ပတ်မှုတွေကို ပိုမိုထိရောက်အောင် ပြောင်းလဲလိုက်ပါ။</h1>'+
+   '<p class="lead">Marketing လုပ်ငန်းစဉ်တွေကို အလိုအလျောက်လုပ်ဆောင်နိုင်ဖို့၊ နေ့စဉ်လုပ်ငန်းတာဝန်တွေကို လျှော့ချနိုင်ဖို့နဲ့ လုပ်ငန်းတိုးတက်မှုကို ပိုမိုမြန်ဆန်စေဖို့ AI နည်းပညာနဲ့ ကူညီပေးပါတယ်။</p>'+
+   '<div class="hero__cta"><a class="btn" href="#video">Services ကြည့်မယ် ↓</a><a class="btn btn--ghost" href="#enquiry" data-enquire="">Project ဆွေးနွေးမယ် →</a></div>'+
+   '<div><div class="flow__title">ဥပမာ - Property ဓာတ်ပုံတစ်ပုံကနေ Walkthrough Video</div>'+flow({
+     inp: shot("property-input.jpg","Original property listing photo","မူရင်း Property ဓာတ်ပုံ"),
+     steps:["ဓာတ်ပုံကို Scene အဖြစ် စီစဉ်","AI နဲ့ ကင်မရာ လှုပ်ရှားမှု ဖန်တီး","Edit လုပ်ပြီး Social Media Format ထုတ်"],
+     out: t("Walkthrough Video")+vid("walk-property")})+'</div></section>'+
+   '<section aria-label="How it works"><div class="how"><div><span class="eyebrow">YOU HAVE</span><h3>သင့်မှာရှိတာ</h3><p>ဓာတ်ပုံ၊ Idea၊ Data၊ ကိုယ်တိုင်လုပ်နေရတဲ့ အလုပ်</p></div>'+
+   '<div><span class="eyebrow">I TRANSFORM</span><h3>AI နဲ့ ပြောင်းလဲပေးမယ်</h3><p>AI + Design + Automation + Research</p></div>'+
+   '<div><span class="eyebrow">YOU GET</span><h3>သင်ရမယ့်အရာ</h3><p>Video၊ Website၊ Automation၊ စုစည်းပြီးသား Data</p></div></div></section>'+
+   '<section style="margin-top:34px"><span class="eyebrow">Services</span><h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;margin-top:6px">ဘာလုပ်ပေးနိုင်လဲ</h2><div class="cats">'+cards+'</div></section>'+
+   '<section style="margin-top:34px">'+cta("")+'</section>';
+}
+function category(c){
+  var idx=CATS.indexOf(c), others=CATS.filter(function(x){return x!==c;});
+  return '<a class="crumb" href="#home">← Services အားလုံး</a>'+
+   '<section class="phead"><span class="eyebrow">'+c.no+' · '+c.short+'</span><h1>'+c.title+'</h1><p>'+c.desc+'</p><span class="price-pill">'+c.price+'</span></section>'+
+   c.render()+
+   '<nav class="nextcats" aria-label="Other services">'+others.map(function(o){return '<a href="#'+o.id+'"><span>'+o.no+' · '+o.title+'<br><small>'+o.price+'</small></span><span>→</span></a>';}).join('')+'</nav>';
+}
+function enquiry(){
+  var opts=SERVICES.map(function(s){return '<option value="'+s[0]+'"'+(s[0]===selected?' selected':'')+'>'+s[1]+'</option>';}).join('');
+  return '<a class="crumb" href="#home">← Services အားလုံး</a><div class="enq"><div style="display:grid;gap:14px;align-content:start"><span class="eyebrow">Enquiry</span>'+
+   '<h1 style="font-size:clamp(1.8rem,4.6vw,2.8rem);font-weight:800;line-height:1.5">Project ဆွေးနွေးမယ်</h1>'+
+   '<p style="color:var(--ink-2)">အမည်၊ Viber နံပါတ်နဲ့ သိချင်တာ၊ လိုချင်တာကို ရေးပေးပါ။ ပြန်လည်ဆက်သွယ်ပါမယ်။</p>'+
+   '<ol class="how-list"><li>Form ဖြည့်ပြီး ပို့ပါ</li><li>Viber မှာ ပြန်ဆက်သွယ်ပါမယ်</li><li>လိုအပ်ချက်နဲ့ စျေးနှုန်း ဆွေးနွေးပြီး စတင်ပါမယ်</li></ol>'+
+   (VIBER_NUMBER?'<p><b>Viber:</b> <span style="user-select:all">'+VIBER_NUMBER+'</span></p>':'')+'</div>'+
+   '<form class="form" id="enqForm" novalidate>'+
+   '<div class="field" id="f-name"><label for="name">အမည်</label><input id="name" name="name" autocomplete="name" required><span class="err" hidden>အမည် ရေးပေးပါ</span></div>'+
+   '<div class="field" id="f-viber"><label for="viber">Viber နံပါတ်</label><input id="viber" name="viber" type="tel" inputmode="tel" autocomplete="tel" placeholder="09xxxxxxxxx" required><small>ပြန်ဆက်သွယ်ရမယ့် Viber နံပါတ်</small><span class="err" hidden>Viber နံပါတ် ရေးပေးပါ</span></div>'+
+   '<div class="field"><label for="service">စိတ်ဝင်စားတဲ့ Service</label><select id="service" name="service"><option value="">ရွေးချယ်ပါ</option>'+opts+'</select></div>'+
+   '<div class="field" id="f-msg"><label for="message">Enquiry Message</label><textarea id="message" name="message" required placeholder="သိချင်တာ၊ လိုချင်တဲ့ အလုပ်ကို ရေးပေးပါ"></textarea><span class="err" hidden>Message ရေးပေးပါ</span></div>'+
+   '<div class="hp" aria-hidden="true"><label>Leave empty<input id="_honey" name="_honey" tabindex="-1" autocomplete="off"></label></div>'+
+   '<div id="enqStatus" role="status" aria-live="polite"></div>'+
+   '<button class="btn" id="enqBtn" type="submit">Enquiry ပို့မယ် →</button></form></div>';
+}
+
+/* ---------- routing ---------- */
+var app=document.getElementById("app"), nav=document.getElementById("nav");
+nav.innerHTML=CATS.map(function(c){return '<a href="#'+c.id+'" data-nav="'+c.id+'">'+c.short+'</a>';}).join('');
+function route(){
+  var h=(location.hash||"").replace("#","")||"home", c=CATS.filter(function(x){return x.id===h;})[0];
+  app.innerHTML = c ? category(c) : (h==="enquiry" ? enquiry() : home()+footer());
+  if(c||h==="enquiry") app.insertAdjacentHTML("beforeend",footer());
+  Array.prototype.forEach.call(nav.children,function(a){ if(a.getAttribute("data-nav")===h) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  window.scrollTo(0,0);
+  if(h==="enquiry") bindForm();
+}
+function footer(){return '<footer><span>Pwint AI Digital Services · Myanmar</span><span>AI Video · Automation · Research &amp; Data · Website &amp; App</span></footer>';}
+window.addEventListener("hashchange",route);
+
+/* ---------- interactions ---------- */
+document.addEventListener("click",function(e){
+  var enq=e.target.closest("[data-enquire]"); if(enq){ selected=enq.getAttribute("data-enquire")||selected; }
+  var b=e.target.closest(".vid__btn");
+  if(b){
+    var box=b.parentNode, v=box.querySelector("video");
+    Array.prototype.forEach.call(document.querySelectorAll("[data-vid] video"),function(o){ if(o!==v){o.pause();} });
+    v.controls=true; box.classList.add("is-playing"); var p=v.play(); if(p&&p.catch)p.catch(function(){});
+    v.onended=function(){ box.classList.remove("is-playing"); v.controls=false; };
+    v.onpause=function(){ if(v.ended) return; };
+  }
+  var more=e.target.closest("[data-showmore]");
+  if(more){ var g=document.getElementById(more.getAttribute("data-showmore")); Array.prototype.forEach.call(g.querySelectorAll("[data-more]"),function(x){x.hidden=false;}); more.hidden=true; }
+});
+
+/* ---------- enquiry form ---------- */
+function bindForm(){
+  var f=document.getElementById("enqForm"); if(!f) return;
+  f.addEventListener("submit",function(ev){
+    ev.preventDefault();
+    var d={name:f.name.value.trim(),viber:f.viber.value.trim(),message:f.message.value.trim(),service:f.service.options[f.service.selectedIndex].text};
+    var ok=true;
+    [["name","f-name"],["viber","f-viber"],["message","f-msg"]].forEach(function(p){
+      var bad=!d[p[0]], box=document.getElementById(p[1]);
+      box.classList.toggle("bad",bad); box.querySelector(".err").hidden=!bad; if(bad) ok=false;
+    });
+    if(!ok){ var first=f.querySelector(".bad input,.bad textarea"); if(first) first.focus(); return; }
+    if(f._honey.value) return;
+    var btn=document.getElementById("enqBtn"), st=document.getElementById("enqStatus");
+    btn.disabled=true; btn.textContent="ပို့နေပါတယ်…"; st.innerHTML="";
+    var body={name:d.name,viber:d.viber,service:d.service,message:d.message,_subject:"New enquiry: "+d.service,_template:"table",_captcha:"false"};
+    var summary="အမည်: "+d.name+"\nViber: "+d.viber+"\nService: "+d.service+"\nMessage: "+d.message;
+    fetch("https://formsubmit.co/ajax/"+ENQUIRY_EMAIL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(body)})
+      .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
+      .then(function(r){
+        if(r.ok && (r.j.success===true||r.j.success==="true")){
+          st.innerHTML='<div class="notice notice--ok">ကျေးဇူးတင်ပါတယ်။ သင့် Enquiry ကို လက်ခံရရှိပါပြီ။ Viber မှာ ပြန်ဆက်သွယ်ပါမယ်။</div>';
+          f.reset(); btn.hidden=true;
+        } else { throw new Error("rejected"); }
+      })
+      .catch(function(){
+        st.innerHTML='<div class="notice notice--err">Form ကို ပို့လို့မရသေးပါ။ အောက်က စာကို Copy ကူးပြီး Viber ကနေ တိုက်ရိုက်ပို့ပေးပါ။'+(VIBER_NUMBER?' Viber: '+VIBER_NUMBER:'')+'<pre id="enqCopy"></pre><button class="btn btn--ghost btn--sm" type="button" id="enqCopyBtn" style="margin-top:10px">Copy ကူးမယ်</button></div>';
+        document.getElementById("enqCopy").textContent=summary;
+        document.getElementById("enqCopyBtn").onclick=function(){
+          var done=function(){document.getElementById("enqCopyBtn").textContent="Copy ကူးပြီးပါပြီ";};
+          if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(summary).then(done,function(){selectText();});}else{selectText();}
+        };
+        function selectText(){var r=document.createRange();r.selectNodeContents(document.getElementById("enqCopy"));var s=getSelection();s.removeAllRanges();s.addRange(r);}
+        btn.disabled=false; btn.textContent="Enquiry ပို့မယ် →";
+      });
+  });
+}
+
+route();
+})();
+</script>
+
+</body>
+</html>
