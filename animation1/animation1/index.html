@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Prompt Vault — Stickman Character &amp; Scene Prompt များ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b12;--bg2:#12121c;--card:#171724;--line:#262638;--text:#f2f2f7;--muted:#9a9ab0;--accent:#7c5cff;--accent2:#22d3ee;--viber:#7360f2;--ok:#22c55e;--radius:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,"Noto Sans Myanmar",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:"Space Grotesk","Noto Sans Myanmar",Inter,sans-serif;letter-spacing:-.01em;line-height:1.45}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;font:600 15px Inter,"Noto Sans Myanmar",sans-serif;border-radius:12px;padding:14px 22px;transition:transform .15s,box-shadow .15s,background .15s;text-decoration:none;color:#fff}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#a855f7);box-shadow:0 8px 24px -8px rgba(124,92,255,.7)}
+.btn-primary:hover{box-shadow:0 12px 32px -8px rgba(124,92,255,.9)}
+.btn-ghost{background:transparent;border:1px solid var(--line)}
+.btn-ghost:hover{background:#1d1d2c}
+.btn-viber{background:var(--viber)}
+header{position:sticky;top:0;z-index:20;background:rgba(11,11,18,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font:700 18px "Space Grotesk",sans-serif;text-decoration:none}
+.logo i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-style:normal;font-size:15px}
+.nav-links{display:flex;gap:26px;font-size:14px;color:var(--muted)}
+.nav-links a{text-decoration:none}.nav-links a:hover{color:var(--text)}
+@media(max-width:720px){.nav-links{display:none}}
+
+.hero{padding:72px 0 30px;text-align:center;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:-200px 0 auto;height:500px;background:radial-gradient(600px 300px at 50% 40%,rgba(124,92,255,.28),transparent 70%);pointer-events:none}
+.pill{display:inline-block;font-size:13px;color:#c9c0ff;background:rgba(124,92,255,.14);border:1px solid rgba(124,92,255,.35);padding:6px 14px;border-radius:99px;margin-bottom:18px}
+.hero h1{font-size:clamp(30px,5.6vw,54px);max-width:860px;margin:0 auto 16px}
+.grad{background:linear-gradient(90deg,#a78bfa,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:17px;max-width:660px;margin:0 auto 28px}
+.hero .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+section{padding:56px 0}
+.sec-head{margin-bottom:26px}
+.sec-head h2{font-size:clamp(24px,4vw,34px)}
+.sec-head p{color:var(--muted)}
+
+/* design cards + slideshow */
+.wide-wrap{max-width:1360px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:stretch}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.card-body{flex:1}
+.plabel{font-size:13px}.prow{padding:9px 10px}
+.pbtns{margin-left:auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+.show{position:relative;aspect-ratio:9/14;background:#000;overflow:hidden;touch-action:pan-y}
+.track{display:flex;height:100%;transition:transform .35s ease}
+.slide{flex:0 0 100%;height:100%;position:relative;display:grid;place-items:center;background:#0c0c14}
+.slide img,.slide video{width:100%;height:100%;object-fit:contain;display:block;background:#0c0c14}
+.slide .soon{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:24px;color:var(--muted);font-size:14px;background:repeating-linear-gradient(45deg,#10101a,#10101a 12px,#12121e 12px,#12121e 24px)}
+.slide.nov .soon{display:grid}
+.slide.nov video{display:none}
+.badge{position:absolute;top:12px;left:12px;font-size:12px;font-weight:600;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);padding:5px 11px;border-radius:99px;z-index:3}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:22px;cursor:pointer;z-index:3;display:grid;place-items:center;line-height:1}
+.arrow:hover{background:rgba(124,92,255,.85)}
+.arrow.prev{left:10px}.arrow.next{right:10px}
+.dots{position:absolute;bottom:12px;left:0;right:0;display:flex;gap:8px;justify-content:center;z-index:3}
+.dot{width:9px;height:9px;border-radius:50%;border:0;background:rgba(255,255,255,.4);cursor:pointer;padding:0}
+.dot.on{background:#fff;width:22px;border-radius:6px}
+.card-body{padding:16px;display:flex;flex-direction:column;gap:12px}
+.card h3{font-size:18px}
+.card .sub{font-size:13px;color:var(--muted);margin-top:-8px}
+.prow{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.prow-top{display:flex;align-items:center;gap:8px;justify-content:space-between;flex-wrap:wrap}
+.plabel{font-size:14px;font-weight:600}
+.pbtns{display:flex;gap:6px}
+.mini{border:1px solid var(--line);background:transparent;color:var(--muted);font:500 12px Inter,"Noto Sans Myanmar",sans-serif;padding:7px 11px;border-radius:9px;cursor:pointer}
+.mini:hover{color:#fff;border-color:var(--accent2)}
+.copy{border:0;color:#fff;font:600 13px Inter,"Noto Sans Myanmar",sans-serif;padding:8px 14px;border-radius:9px;cursor:pointer;background:linear-gradient(135deg,var(--accent),#a855f7)}
+.copy.done{background:var(--ok)}
+.ptext{display:none;margin-top:10px;max-height:220px;overflow:auto;white-space:pre-wrap;font:12px/1.55 ui-monospace,Menlo,monospace;color:#b9b9cf;background:#0d0d16;border:1px dashed var(--line);border-radius:10px;padding:10px}
+.prow.open .ptext{display:block}
+
+/* tutorial */
+.tut{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.vbox{aspect-ratio:16/9;position:relative;background:#000}
+.vbox video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
+.vbox .soon{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:20px;color:var(--muted);font-size:14px;background:repeating-linear-gradient(45deg,#10101a,#10101a 12px,#12121e 12px,#12121e 24px)}
+.vbox.nov .soon{display:grid}
+.vbox.nov video{display:none}
+.step-body{padding:18px}
+.step-num{display:inline-block;font:700 12px Inter,"Noto Sans Myanmar";color:var(--accent2);letter-spacing:.06em;margin-bottom:6px}
+.step h3{font-size:18px;margin-bottom:6px}
+.step p{color:var(--muted);font-size:14px}
+
+/* CTA */
+.cta-box{text-align:center;max-width:760px;margin:0 auto;background:linear-gradient(135deg,rgba(124,92,255,.2),rgba(34,211,238,.12));border:1px solid rgba(124,92,255,.4);border-radius:24px;padding:44px 28px}
+.cta-box h2{font-size:clamp(22px,3.6vw,32px);margin-bottom:12px}
+.cta-box p{color:#c8c8d8;margin-bottom:24px}
+.cta-box .btn{font-size:17px;padding:16px 30px}
+
+/* inputs */
+.phone{display:flex;border:1px solid var(--line);border-radius:12px;background:var(--bg2);overflow:hidden}
+.phone:focus-within{border-color:var(--accent)}
+.phone select{background:transparent;color:var(--text);border:0;border-right:1px solid var(--line);padding:0 10px;font:500 15px Inter;outline:none}
+.phone select option{background:var(--bg2)}
+.phone input{flex:1;min-width:0;background:transparent;border:0;color:var(--text);font:500 16px Inter;padding:14px;outline:none}
+.err{color:#f87171;font-size:13px;min-height:18px;margin-top:6px;text-align:left}
+
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(5,5,10,.72);backdrop-filter:blur(14px);transition:opacity .3s}
+.overlay.hide{opacity:0;pointer-events:none;visibility:hidden}
+.modal{width:100%;max-width:440px;background:#14141f;border:1px solid #2c2c42;border-radius:24px;padding:32px 28px 24px;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:pop .35s ease;position:relative;max-height:calc(100vh - 40px);overflow:auto}
+.modal.wide{max-width:640px}
+@keyframes pop{from{transform:translateY(16px) scale(.97);opacity:0}}
+.modal .logo{justify-content:center;margin-bottom:18px}
+.modal h2{font-size:25px;text-align:center;margin-bottom:8px}
+.modal .sub-t{text-align:center;color:var(--muted);font-size:15px;margin-bottom:22px}
+.modal .btn-primary{width:100%;padding:16px;font-size:16px}
+.small-link{display:block;margin:12px auto 0;background:none;border:1px solid var(--line);color:#cfcfe0;font:500 13px Inter,"Noto Sans Myanmar";padding:9px 16px;border-radius:99px;cursor:pointer}
+.small-link:hover{border-color:var(--accent2);color:#fff}
+.back{background:none;border:0;color:var(--muted);font:500 13px Inter,"Noto Sans Myanmar";cursor:pointer;margin-bottom:10px}
+.viber-badge{display:flex;align-items:center;gap:10px;font-size:13px;color:#cfc8ff;background:rgba(115,96,242,.14);border:1px solid rgba(115,96,242,.35);border-radius:12px;padding:10px 12px;margin-bottom:14px}
+.consent{font-size:12px;color:var(--muted);margin:10px 0 14px;text-align:center}
+.svc-note{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:#c8c8d8;text-align:center}
+.svc-note b{color:#fff}
+.svc-note a{text-decoration:none;display:inline-block;margin-top:6px;font-weight:600;color:var(--accent2)}
+.step2{display:none}
+.modal.ask .step1{display:none}.modal.ask .step2{display:block}
+.close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:#cfcfe0;font-size:18px;cursor:pointer}
+.close:hover{background:#222235}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:6px}
+.plan{border:1px solid var(--line);border-radius:18px;padding:22px 20px;background:var(--bg2);display:flex;flex-direction:column;gap:10px;position:relative}
+.plan.best{border-color:var(--accent);background:linear-gradient(180deg,rgba(124,92,255,.16),var(--bg2))}
+.plan .tagp{position:absolute;top:-11px;left:18px;background:linear-gradient(135deg,var(--accent),#a855f7);font-size:11px;font-weight:700;padding:3px 11px;border-radius:99px}
+.plan .pn{font-size:13px;color:var(--accent2);font-weight:700}
+.plan h3{font-size:17px}
+.price{font:700 30px "Space Grotesk","Noto Sans Myanmar",sans-serif}
+.price small{font:500 14px Inter,"Noto Sans Myanmar";color:var(--muted)}
+.plan ul{list-style:none;color:#c8c8d8;font-size:14px;flex:1}
+.plan li:before{content:"✓ ";color:var(--ok);font-weight:700}
+.plan .btn{width:100%;padding:13px}
+.plan-note{text-align:center;font-size:13px;color:var(--muted);margin-top:16px}
+
+
+.stepper{display:flex;gap:6px;justify-content:center;margin:2px 0 18px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.stepper span{padding:4px 10px;border-radius:99px;border:1px solid var(--line)}
+.stepper span.on{color:#fff;border-color:var(--accent);background:rgba(124,92,255,.2)}
+.stepper span.done{color:#bbf7d0;border-color:rgba(34,197,94,.5)}
+.pstep{display:none}
+.modal[data-step="1"] .pstep[data-s="1"],.modal[data-step="2"] .pstep[data-s="2"],.modal[data-step="3"] .pstep[data-s="3"],.modal[data-step="4"] .pstep[data-s="4"]{display:block}
+.order-sum{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:6px 0 14px;font-size:14px}
+.order-sum b{font:700 clamp(16px,5vw,20px) "Space Grotesk","Noto Sans Myanmar",sans-serif;color:#fff;text-align:right}
+.order-sum{flex-wrap:wrap}
+.kbz{border:1px solid rgba(34,211,238,.4);background:linear-gradient(135deg,rgba(34,211,238,.12),rgba(124,92,255,.12));border-radius:16px;padding:16px;text-align:center;margin-bottom:14px}
+.kbz-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.kbz-badge{background:#0057b8;color:#fff;font-weight:800;font-size:13px;padding:4px 12px;border-radius:8px;letter-spacing:.02em}
+.kbz-hint{font-size:12px;color:var(--muted)}
+.kbz-num{font:700 clamp(22px,7.4vw,30px) "Space Grotesk",Inter,sans-serif;letter-spacing:.04em;margin:4px 0;white-space:nowrap}
+@media(max-width:420px){.modal{padding:28px 16px 20px}.overlay{padding:12px}.plan{padding:20px 16px}}
+.kbz-name{font-size:14px;color:#d6d6e6;margin-bottom:10px}
+.kbz-copy{padding:9px 16px;font-size:13px}
+.pay-steps{margin:0 0 14px 20px;color:#c8c8d8;font-size:14px;text-align:left}
+.pay-steps li{margin-bottom:4px}
+.lbl{display:block;font-size:13px;color:var(--muted);margin:10px 0 6px}
+#plansModal .phone{margin-bottom:2px}
+#plansModal .btn-primary{width:100%;padding:15px;font-size:16px}
+.center-box{text-align:center}
+.center-box h2{font-size:21px}
+.spin{width:46px;height:46px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--accent);margin:18px auto;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.okmark{width:58px;height:58px;border-radius:50%;background:rgba(34,197,94,.18);border:2px solid var(--ok);color:var(--ok);display:grid;place-items:center;font-size:30px;margin:6px auto 12px}
+.okmark.big{border:0;background:none;font-size:48px}
+.recap{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;text-align:left;margin:0 0 14px;line-height:1.9}
+.recap b{color:#fff}
+.next-h{font-weight:600;color:#fff;text-align:left;margin:0 0 6px;font-size:14px}
+.tip{font-size:13px;color:#c8c8d8;background:rgba(115,96,242,.12);border:1px solid rgba(115,96,242,.3);border-radius:12px;padding:10px 12px;margin-bottom:12px;text-align:left}
+.plan-note a{color:var(--accent2);text-decoration:none;font-weight:600}
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);background:#1f1f2e;border:1px solid var(--line);padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;transition:.25s;z-index:300;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.foot-top{padding-bottom:18px;margin-bottom:16px;border-bottom:1px solid var(--line);color:#d6d6e6;font-size:15px}
+.foot-top b{color:#fff}.foot-sub{color:var(--muted);font-size:13px}
+.copy-fallback{position:fixed;left:-9999px}
+</style>
+</head>
+<body class="locked">
+
+<!-- ================= GATE POPUP ================= -->
+<div class="overlay" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="modal" id="modal">
+    <div class="logo"><i>✦</i><span class="brand-name">AI Prompt Vault</span></div>
+    <div class="step1">
+      <h2 id="gateTitle">Stickman Character &amp; Scene Prompt များကို <span class="grad">အခမဲ့</span> ရယူလိုက်ပါ</h2>
+      <p class="sub-t">Copy-Paste လုပ်ရုံနဲ့ ကိုယ်ပိုင် Stickman ဗီဒီယိုတွေ ဖန်တီးနိုင်ပါပြီ။ အမြဲတမ်း အခမဲ့ — Prompt အသစ်တွေ ပို့ပေးဖို့ Viber နံပါတ်လေးပဲ ထည့်ပေးပါ။</p>
+      <button class="btn btn-primary" data-mode="free">🎁 အခမဲ့ ရယူမယ်</button>
+      <button class="small-link" data-mode="tutorial">▶ အခမဲ့ Tutorial ကြည့်မယ်</button>
+    </div>
+    <div class="step2" id="gateForm">
+      <button type="button" class="back" id="gateBack">← နောက်သို့</button>
+      <h2 id="step2Title">Viber နံပါတ် ထည့်ပါ</h2>
+      <p class="sub-t" id="step2Sub">Prompt အသစ်တွေကို Viber ကနေ ပို့ပေးပါမယ်။ Spam မပို့ပါ။</p>
+      <div class="viber-badge">💬 Prompt အသစ်ထွက်တိုင်း Viber ကနေ အသိပေးပါမယ်</div>
+      <div class="phone">
+        <select id="gateCc" aria-label="Country code">
+          <option value="+95">🇲🇲 +95</option><option value="+66">🇹🇭 +66</option><option value="+65">🇸🇬 +65</option><option value="+60">🇲🇾 +60</option><option value="+1">🌐 +1</option>
+        </select>
+        <input id="gateNum" type="tel" inputmode="numeric" autocomplete="tel" placeholder="09 xxx xxx xxx" aria-label="Viber number">
+      </div>
+      <div class="err" id="gateErr"></div>
+      <p class="consent">ဆက်လက်ခြင်းဖြင့် Viber မှ သတင်းများ လက်ခံရန် သဘောတူပါသည်။ အချိန်မရွေး ရပ်ဆိုင်းနိုင်ပါသည်။</p>
+      <button class="btn btn-primary" type="button" id="gateSubmit">ဝင်ကြည့်မယ် →</button>
+    </div>
+    <div class="svc-note">
+      🤖 <b>ဗီဒီယို ထုတ်လုပ်မှုကို AI နဲ့ အလိုအလျောက် လုပ်ပေးမယ့် System လိုချင်ပါသလား?</b><br>
+      AI Automation ဝန်ဆောင်မှုအတွက် ဆက်သွယ်ပါ။<br>
+      <a class="viber-link" href="#">Viber: <span class="contact-num"></span></a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MEMBERSHIP / PAYMENT POPUP ================= -->
+<div class="overlay hide" id="plansPop" role="dialog" aria-modal="true" aria-labelledby="plansTitle">
+  <div class="modal wide" id="plansModal" data-step="1">
+    <button class="close" id="plansClose" aria-label="ပိတ်မယ်">✕</button>
+    <div class="stepper" id="stepper"><span data-n="1">၁ Plan</span><span data-n="2">၂ ငွေပေးချေ</span><span data-n="3">၃ စစ်ဆေး</span><span data-n="4">၄ ပြီးဆုံး</span></div>
+
+    <!-- STEP 1: choose plan -->
+    <div class="pstep" data-s="1">
+      <h2 id="plansTitle">Membership Plan များ</h2>
+      <p class="sub-t">ကိုယ်နဲ့ကိုက်တဲ့ Plan ကို ရွေးပါ။</p>
+      <div class="plans">
+        <div class="plan best">
+          <span class="tagp">ဗီဒီယို Automation</span>
+          <span class="pn">PLAN 1</span>
+          <h3>Automation System ဝယ်ယူရန်</h3>
+          <div class="price">250,000 <small>ကျပ် / တစ်လ</small></div>
+          <ul><li>နေ့စဉ် ဗီဒီယို Generate လုပ်ပြီး သင့်ထံ ပို့ပေးမည်</li></ul>
+          <button class="btn btn-primary" data-pick="1">ဒီ Plan ကို ရွေးမယ် →</button>
+        </div>
+        <div class="plan">
+          <span class="pn">PLAN 2</span>
+          <h3>Community Group (Viber) ဝင်ရန်</h3>
+          <div class="price">30,000 <small>ကျပ်</small></div>
+          <ul><li>Viber Community Group ထဲ ဝင်ရောက်နိုင်မည်</li></ul>
+          <button class="btn btn-viber" data-pick="2">ဒီ Plan ကို ရွေးမယ် →</button>
+        </div>
+      </div>
+      <p class="plan-note">မေးမြန်းလိုပါက Viber: <a class="viber-link" href="#"><span class="contact-num"></span></a></p>
+    </div>
+
+    <!-- STEP 2: payment -->
+    <div class="pstep" data-s="2">
+      <button type="button" class="back" data-goto="1">← Plan ပြန်ရွေးမယ်</button>
+      <h2>ငွေပေးချေရန်</h2>
+      <div class="order-sum"><span id="sumPlan"></span><b id="sumAmt"></b></div>
+      <div class="kbz">
+        <div class="kbz-top"><span class="kbz-badge">KBZ Pay</span><span class="kbz-hint">ဒီနံပါတ်ကို ငွေလွှဲပါ</span></div>
+        <div class="kbz-num" id="kbzNum">09766050139</div>
+        <div class="kbz-name">အမည် — <b>Pwint Pwint San</b></div>
+        <button class="btn btn-ghost kbz-copy" id="kbzCopy" type="button">📋 နံပါတ် ကူးမယ်</button>
+      </div>
+      <ol class="pay-steps">
+        <li>KBZ Pay App ကိုဖွင့်ပြီး အပေါ်က နံပါတ်ကို ငွေလွှဲပါ။ ငွေပမာဏက <b id="sumAmt2"></b> ဖြစ်ရပါမယ်။</li>
+        <li>ငွေလွှဲပြီးရင် ပြေစာ (Screenshot) ကို သိမ်းထားပါ။</li>
+        <li>အောက်မှာ Viber နံပါတ်ထည့်ပြီး <b>"စစ်ဆေးမယ်"</b> ကို နှိပ်ပါ။</li>
+      </ol>
+      <label class="lbl">သင့် Viber နံပါတ်</label>
+      <div class="phone">
+        <select id="payCc" aria-label="Country code"><option value="+95">🇲🇲 +95</option><option value="+66">🇹🇭 +66</option><option value="+65">🇸🇬 +65</option><option value="+60">🇲🇾 +60</option><option value="+1">🌐 +1</option></select>
+        <input id="payNum" type="tel" inputmode="numeric" placeholder="09 xxx xxx xxx" aria-label="Viber number">
+      </div>
+      <label class="lbl">KBZ Pay ငွေလွှဲ ID (နောက်ဆုံး ဂဏန်း ၆ လုံး — ရှိလျှင်)</label>
+      <div class="phone"><input id="payTxn" type="text" inputmode="numeric" maxlength="24" placeholder="ဥပမာ 123456" aria-label="Transaction ID"></div>
+      <div class="err" id="payErr"></div>
+      <button class="btn btn-primary" type="button" id="payCheck">✅ ငွေလွှဲပြီးပါပြီ — စစ်ဆေးမယ်</button>
+    </div>
+
+    <!-- STEP 3: checking / received -->
+    <div class="pstep" data-s="3">
+      <div id="chkLoading" class="center-box">
+        <div class="spin" aria-hidden="true"></div>
+        <h2>စစ်ဆေးနေပါတယ်…</h2>
+        <p class="sub-t">အချက်အလက်များကို ပေးပို့နေပါတယ်။ ခဏစောင့်ပါ။</p>
+      </div>
+      <div id="chkDone" class="center-box" style="display:none">
+        <div class="okmark">✓</div>
+        <h2>ငွေလွှဲ အချက်အလက် လက်ခံရရှိပါပြီ</h2>
+        <p class="sub-t">ကျွန်ုပ်တို့ဘက်က ငွေလွှဲမှုကို စစ်ဆေးပြီး Viber မှာ အတည်ပြုပေးပါမယ်။</p>
+        <div class="recap" id="recap"></div>
+        <div class="tip">💡 ပိုမြန်စေချင်ရင် ငွေလွှဲပြေစာ Screenshot ကို Viber <b class="contact-num"></b> ကို ပို့ပေးပါ။</div>
+        <a class="btn btn-viber viber-link" href="#" style="width:100%;margin-bottom:10px">💬 Screenshot ကို Viber မှာ ပို့မယ်</a>
+        <div class="tip">📲 Screenshot ပို့ပြီးရင် ကျွန်ုပ်တို့ရဲ့ Viber ကို Add လုပ်ထားပါ။ အတည်ပြုချက်ကို ပိုမြန်မြန် ပြန်ပို့နိုင်ပါတယ်။</div>
+        <a class="btn btn-ghost viber-add" href="#" style="width:100%;margin-bottom:10px">➕ Viber မှာ Add လုပ်မယ် (<span class="contact-num"></span>)</a>
+        <button class="btn btn-primary" type="button" id="orderFinish">🎉 Order ပြီးဆုံးပါပြီ</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: thank you -->
+    <div class="pstep" data-s="4">
+      <div class="center-box">
+        <div class="okmark big">🎉</div>
+        <h2>Membership Plan ကို ဝင်ရောက်ပေးတဲ့အတွက် ကျေးဇူးတင်ပါတယ်!</h2>
+        <p class="sub-t">သင့်ရဲ့ Order ကို လက်ခံရရှိပါပြီ။</p>
+        <div class="recap" id="thanksRecap"></div>
+        <div class="next-h">နောက်ထပ် ဆက်လုပ်ရမယ့်အဆင့်များ</div>
+        <ol class="pay-steps" id="nextSteps"></ol>
+        <a class="btn btn-viber viber-add" href="#" style="width:100%;margin-bottom:10px">➕ Viber မှာ Add လုပ်မယ်</a>
+        <button class="btn btn-primary" type="button" id="thanksClose">ပိတ်မယ်</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top"><i>✦</i><span class="brand-name">AI Prompt Vault</span></a>
+    <nav class="nav-links">
+      <a href="#prompts">Design များ</a>
+      <a href="#tutorial">သင်ခန်းစာ</a>
+      <a href="#membership">Membership</a>
+    </nav>
+    <button class="btn btn-primary" data-plans style="padding:10px 16px;font-size:14px">Membership</button>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <span class="pill">✨ Character Design + Scene Prompt များ</span>
+      <h1>Prompt ကို Copy ကူး။ <span class="grad">ကိုယ်ပိုင် Stickman ဗီဒီယို ဖန်တီးလိုက်ပါ။</span></h1>
+      <p>Design တစ်ခုချင်းစီမှာ ပုံနဲ့ ဗီဒီယို နမူနာ၊ Character Prompt နဲ့ Scene Prompt ပါပါတယ်။ Copy ကူးပြီး AI tool မှာ Paste လုပ်ရုံပါပဲ။</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#prompts">Design များ ကြည့်မယ်</a>
+        <a class="btn btn-ghost" href="#tutorial">▶ အသုံးပြုနည်း (၃ ပိုင်း)</a>
+      </div>
+    </div>
+  </div>
+
+  <section id="prompts">
+    <div class="wrap wide-wrap">
+      <div class="sec-head">
+        <h2>Design များ</h2>
+        <p>ပုံနဲ့ ဗီဒီယိုကို ဘေးဘက်ကို ပွတ်ဆွဲပြီး (သို့) မြား ခလုတ်နဲ့ ကြည့်ပါ။ <b>ကူး</b> ကိုနှိပ်ပြီး Prompt ကို AI tool မှာ Paste လုပ်ပါ။</p>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="tut" id="tutorial">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>အခမဲ့ Tutorial — ၃ ပိုင်း</h2>
+        <p>Prompt ယူတာကနေ ဗီဒီယို ထုတ်တာအထိ အဆင့်ဆင့် လေ့လာပါ။</p>
+      </div>
+      <div class="steps" id="steps"></div>
+    </div>
+  </section>
+
+  <section id="membership">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>ဗီဒီယို ထုတ်လုပ်မှုကို <span class="grad">အလိုအလျောက်</span> လုပ်စေချင်ရင် ကျွန်ုပ်တို့ရဲ့ Membership Plan ကို ဝင်ရောက်ပါ</h2>
+        <p>နေ့စဉ် ဗီဒီယို Generate လုပ်ပြီး သင့်ထံ ပို့ပေးမယ့် Automation System နဲ့ Viber Community Group Plan တွေ ရှိပါတယ်။</p>
+        <button class="btn btn-primary" data-plans>💎 Membership Plan များ ကြည့်မယ်</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-top">
+    <div><b>AI Automation ဝန်ဆောင်မှု လိုချင်ပါသလား?</b><br><span class="foot-sub">မေးမြန်းလိုတာရှိရင် Viber မှာ ဆက်သွယ်ပါ — <span class="contact-num"></span></span></div>
+    <a class="btn btn-viber viber-add" href="#">💬 Viber မှာ ဆက်သွယ်မယ်</a>
+  </div>
+  <div class="wrap foot-bot">
+    <span>© <span id="yr"></span> <span class="brand-name">AI Prompt Vault</span>။ မူပိုင်ခွင့် ရယူထားသည်။</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= CONFIG ================= */
+const CONFIG = {
+  brand: "AI Prompt Vault",
+  contactViber: "+95 9 7315 0647",
+  contactViberRaw: "+95973150647",
+  viberAddLink: "viber://add?number=95973150647",   // "Add me on Viber" link
+  // Optional Google Apps Script URL to save Viber numbers into a Google Sheet (works when hosted on your own site)
+  leadWebhook: "",
+  tutorial: [
+    { title:"အပိုင်း ၁ — Prompt ရယူနည်း",                       desc:"ဒီ Website ကနေ Character Prompt နဲ့ Scene Prompt တွေကို ကူးယူနည်း။",              video:"videos/tutorial-1.mp4" },
+    { title:"အပိုင်း ၂ — Character နဲ့ Scene ဖန်တီးနည်း",        desc:"ကူးထားတဲ့ Prompt ကို သုံးပြီး Stickman Character နဲ့ Scene ပုံတွေ ဖန်တီးနည်း။",     video:"videos/tutorial-2.mp4" },
+    { title:"အပိုင်း ၃ — ဗီဒီယို Generate လုပ်နည်း",              desc:"ဖန်တီးထားတဲ့ ပုံတွေကနေ ဗီဒီယို Generate လုပ်နည်း။",                              video:"videos/tutorial-3.mp4" }
+  ]
+};
+
+/* Each design: photo + video slideshow + prompts */
+const PROMPT_TEXT = {"d1_char": "MAIN CHARACTER MASTER PROMPT:\n\n2D EDUCATIONAL STICKMAN CARTOON:\n\nCharacter ID: MAIN_01\n\nCreate a consistent 2D hand-drawn cartoon stickman character based on the following exact visual description.\n\nCHARACTER APPEARANCE:\n\n- Gender: Male\n- Age appearance: Young adult (approximately 25–30 years old)\n- Head: Oversized, large round head with a slightly oval shape.\n- Face: Plain white face with clean black outlines.\n- Hair: Thick, short, curly black hair with a rounded silhouette. Hair covers the top and sides of the head.\n- Eyes: Two large circular white eyes with small round black pupils.\n- Eyebrows: Simple curved black eyebrows.\n- Nose: No visible nose.\n- Mouth: Small, simple curved black line.\n- Body: Extremely simple, slim stickman body.\n- Arms: Thin black line arms.\n- Hands: Minimal or no visible hand details.\n- Legs: Two long, thin black line legs.\n- Feet: Simple angled black line feet.\n\nART STYLE:\n\n- 2D hand-drawn educational cartoon.\n- Thick black outlines with slightly imperfect hand-drawn strokes.\n- Flat white face and black curly hair.\n- Minimalist stickman anatomy.\n- Oversized cartoon head and tiny slim body.\n- Simple, clean illustrations.\n- Flat colors without realistic textures.\n- No complex shading or 3D effects.\n- Friendly educational YouTube animation aesthetic.\n\nCHARACTER PERSONALITY:\n\nCurious, friendly, approachable, expressive, and slightly humorous.\n\nFACIAL EXPRESSIONS:\n\nThe character must be able to express:\n\n- Happy: Slightly curved smiling mouth.\n- Surprised: Wide-open eyes and open mouth.\n- Confused: Uneven eyebrows and tilted mouth.\n- Sad: Downturned mouth and lowered eyebrows.\n- Curious: Raised eyebrows and focused eyes.\n- Thinking: Slightly tilted head and thoughtful expression.\n- Neutral: Straight mouth and relaxed eyes.\n\nCHARACTER CONSISTENCY RULES:\n\nIMPORTANT: Always preserve the exact same character identity.\n\n1. Same short curly black hairstyle.\n2. Same oversized round white head.\n3. Same large circular eyes and black pupils.\n4. Same simple facial structure.\n5. Same slim stickman body.\n6. Same thin black line arms and legs.\n7. Same black outline thickness.\n8. Same head-to-body proportions.\n\nOnly facial expressions, body poses, movements, and scene-specific accessories may change.\n\nNEGATIVE PROMPT:\n\nNo additional characters, no elderly characters, no different hairstyles, no realistic human anatomy, no muscular body, no detailed fingers, no anime, no 3D rendering, no photorealism, no complex clothing, no skin texture, no inconsistent facial features.\n\nFINAL INSTRUCTION: This is the permanent main character for the entire animation series. Every new scene must reproduce this exact character design, regardless of location, action, camera angle, or facial expression.", "d1_scene": "SCENE MASTER PROMPT:\n\n2D HAND-DRAWN EDUCATIONAL STICKMAN ANIMATION:\n\n1. VISUAL STYLE:\n\nCreate a 2D hand-drawn educational cartoon illustration in the exact visual style of the supplied reference images.\n\nArt direction:\n\n- Simple hand-drawn cartoon illustrations.\n- Thick, bold, slightly irregular black outlines.\n- Flat solid colors with minimal shading.\n- Large, clean cartoon shapes.\n- Minimalist stickman characters.\n- Oversized round heads and slim stickman bodies.\n- Simple, expressive facial features.\n- Hand-drawn imperfections that give the illustration a friendly, homemade feel.\n- Clean educational explainer video aesthetic.\n\nThe overall appearance should resemble a hand-drawn educational YouTube documentary, not a polished 3D animation or modern vector infographic.\n\n2. MAIN CHARACTER:\n\nAlways use the exact MAIN_01 character from the Character Master Prompt.\n\nFixed identity:\n\n- Large round white head.\n- Thick short curly black hair.\n- Large circular eyes with black pupils.\n- Simple black eyebrows.\n- Small curved mouth.\n- Thin black stickman arms and legs.\n- Minimalist body proportions.\n\nThe character must remain visually identical in every scene.\n\nOnly change:\n\n- Facial expressions.\n- Body poses.\n- Actions and movements.\n- Scene-specific props.\n- Accessories when required by the story.\n\n3. BACKGROUND & ENVIRONMENT:\n\nUse simple, colorful, hand-drawn environments.\n\nBackground characteristics:\n\n- Flat pastel or warm-colored backgrounds.\n- Simple horizon lines.\n- Minimal environmental details.\n- Hand-drawn grass, trees, mountains, houses, rivers, and landscapes when appropriate.\n- Large recognizable objects rather than excessive small details.\n- Clear separation between foreground, middle ground, and background.\n\nUse colors such as:\n\n- Light sky blue.\n- Warm orange.\n- Sandy yellow.\n- Beige.\n- Muted green.\n- Light brown.\n- Soft pastel colors.\n\nBackgrounds should support the story without distracting from the main character.\n\n4. PROPS & OBJECTS:\n\nAll objects must follow the same hand-drawn illustration style.\n\nExamples:\n\n- Baskets, food, tools, weapons, furniture, buildings, vehicles, plants, and everyday objects.\n- Simple cartoon shapes with thick black outlines.\n- Flat colors.\n- Minimal internal details.\n- Slightly imperfect hand-drawn lines.\n\nObjects must be proportionally appropriate to the character and the scene.\n\n5. SCENE COMPOSITION:\n\nUse a clean, readable composition similar to educational YouTube animation screenshots.\n\n- Wide 16:9 landscape composition.\n- Main character clearly visible.\n- Important objects large enough to recognize.\n- Use medium-wide or wide shots for storytelling.\n- Use close-ups when explaining important details.\n- Keep visual balance between characters and props.\n- Avoid unnecessary empty spaces.\n- Make the story understandable through the illustration alone.\n\nWhen multiple objects are important, arrange them clearly rather than overcrowding the frame.\n\n6. STORYTELLING & VISUALIZATION:\n\nIllustrate the exact action described in the scene.\n\nExamples:\n\n- Walking through a landscape.\n- Carrying baskets of food.\n- Gathering resources.\n- Cooking or preparing food.\n- Talking with another person.\n- Exploring an environment.\n- Working with tools.\n- Looking at something with curiosity.\n\nThe illustration should communicate the story immediately without requiring text explanations.\n\nUse expressive poses and visual actions to make educational storytelling engaging.\n\n7. COLOR & LINE QUALITY:\n\n- Strong black outlines.\n- Consistent outline thickness.\n- Flat color fills.\n- No photorealistic textures.\n- No glossy surfaces.\n- No complex gradients.\n- No dramatic cinematic lighting.\n- No excessive shadows.\n- Slightly rough hand-drawn line quality.\n\n8. STRICT CONSISTENCY RULES:\n\n1. Never change the main character's face or hairstyle.\n2. Never change the character's body proportions.\n3. Maintain the same illustration style in every scene.\n4. Keep the same black outline quality.\n5. Use consistent colors and visual simplicity.\n6. All props must look hand-drawn.\n7. Backgrounds must follow the same 2D cartoon aesthetic.\n8. Avoid mixing different illustration styles.\n9. Do not introduce realistic or 3D objects.\n10. Every scene must look like it belongs to the same animated educational video series.\n\n9. NEGATIVE PROMPT:\n\nPhotorealistic images, 3D characters, anime, manga, realistic human anatomy, detailed skin texture, realistic lighting, glossy materials, cinematic 3D rendering, complex gradients, excessive shadows, highly detailed backgrounds, modern corporate vector graphics, inconsistent character designs, different hairstyles, unnecessary text, subtitles, watermarks, logos.\n\nFINAL OUTPUT REQUIREMENT:\n\nGenerate one complete 2D educational stickman cartoon scene in 16:9 landscape format.\n\nThe final illustration must look like a frame taken directly from a consistent hand-drawn educational YouTube documentary.\n\nPreserve MAIN_01 character identity and follow the exact visual style throughout the entire animation series.", "d2_main": "MAIN CHARACTER MASTER PROMPT:\n\n2D Storytime Stickman Cartoon\nCharacter ID: MAIN_01\n\nCreate a consistent 2D hand-drawn cartoon stickman character based on the following exact visual description.\n\nCharacter Appearance\n\n- Gender: Male\n\n- Age appearance: Young adult (approximately 20–28 years old)\n\n- Head: Oversized, large round head with a slightly asymmetrical, lumpy oval shape.\n\n- Face: Flat matte-white face with bold, organic black outlines.\n\n- Hair: Short, messy, spiky tufts of light-brown/ochre hair (#A66B2D) with thin black outlines sprouting irregularly across the top crown of the head.\n\n- Eyes: Two large, solid pitch-black circular eyes with no white sclera, pupils, or highlights.\n\n- Eyebrows: Thin, simple curved black-line eyebrows.\n\n- Nose: No visible nose.\n\n- Mouth: Simple thin curved black line when closed; wide, rounded shape with a dark-maroon interior (#4A1C1C) when yelling, talking loudly, or laughing.\n\n- Body: Extremely simple, slim stickman torso made of a single thick black line (Optional Sleepwear Variant: rectangular torso and straight pants with horizontal light-teal #72A8B2 and white stripes).\n\n- Arms: Thin, uniform solid black line arms.\n\n- Hands: Simple rounded, fingerless black mitten-like hands.\n\n- Legs: Two long, thin solid black line legs.\n\n- Feet: Simple short, angled black line feet.\n\nArt Style\n\n- 2D hand-drawn storytime cartoon.\n\n- Bold black outlines with slightly imperfect, organic hand-drawn strokes.\n\n- Flat matte-white face and solid-colored hair.\n\n- Minimalist stickman anatomy.\n\n- Oversized cartoon head and tiny slim stick body.\n\n- Simple, clean web-comic illustrations.\n\n- Flat solid colors without realistic textures.\n\n- No complex shading, gradients, or 3D effects (only optional soft dark-gray under-eye shading when exhausted).\n\n- Expressive, comedic YouTube storytime animation aesthetic (similar to *Casually Explained* or *TheOdd1sOut*).\n\nCharacter Personality Relatable, expressive, slightly neurotic, reactive, and comedic.\n\nFacial Expressions The character must be able to express:\n\n- Happy: Slightly curved smiling black line mouth and relaxed eyebrows.\n\n- Excited / Talking: Wide-open dark-maroon mouth and raised eyebrows.\n\n- Angry / Shouting: Wide-open frowning mouth, furrowed/angled eyebrows, and leaning posture.\n\n- Exhausted / Sleep-Deprived: Soft dark-gray smudges under the solid black eyes and a flat or slightly crooked line mouth.\n\n- Confused: Uneven eyebrows (one raised, one lowered) and a small tilted mouth.\n\n- Neutral: Simple straight or gently curved line mouth and relaxed eyes.\n\nCharacter Consistency Rules IMPORTANT: Always preserve the exact same character identity.\n\n1. Same short, messy spiky light-brown hair tufts on top of the head.\n\n3. Same oversized, slightly asymmetrical round white head.\n\n5. Same large solid pitch-black circular eyes (never add white eyeballs or pupils).\n\n7. Same nose-free minimalist facial structure.\n\n9. Same slim black-line stickman body (unless explicitly in striped pajamas).\n\n11. Same thin black line arms and legs with fingerless mitten hands.\n\n13. Same bold black outline thickness.\n\n15. Same oversized head-to-body proportions. Only facial expressions, body poses, movements, and scene-specific props/accessories may change.\n\nNegative Prompt No white eyeballs, no pupils, no nose, no curly black hair, no realistic human anatomy, no muscular body, no detailed fingers, no anime, no 3D rendering, no photorealism, no complex clothing, no gradients, no skin texture, no inconsistent facial features.\n\nFINAL INSTRUCTION: This is the permanent main character for the entire animation series. Every new scene must reproduce this exact character design, regardless of location, action, camera angle, or facial expression.", "d2_brain": "CO-STAR CHARACTER MASTER PROMPT (ANTHROPOMORPHIC BRAIN):\n\n2D Storytime Cartoon\nCharacter ID: BRAIN_01\n\nCreate a consistent 2D hand-drawn anthropomorphic brain character based on the following exact visual description.\n\nCharacter Appearance\n\n- Gender: Genderless / Personified Inner Voice\n\n- Age appearance: Timeless / Mischievous persona\n\n- Head / Main Body: Oversized, bulbous pastel-pink human brain (#F5A3B5) serving as both head and torso, outlined in bold, slightly imperfect black ink. Covered in wavy, hand-drawn black squiggly lines indicating brain folds and sulci.\n\n- Lower Back Detail: A darker dusty-mauve (#9E6B76) horizontally striped cerebellum tucked beneath the lower back right side of the brain mass.\n\n- Face: Embedded directly onto the front lobe of the pink brain with no separate face outline.\n\n- Eyes: Two large, solid pitch-black circular eyes with no white sclera or pupils.\n\n- Eyebrows: Thin, expressive black-line eyebrows positioned above the black eyes.\n\n- Nose: No visible nose.\n\n- Mouth: Simple thin black line, typically curved into a smug smirk or scheming grin.\n\n- Arms: Thin, uniform solid black stick arms emerging directly from the sides of the brain.\n\n- Hands: Simple rounded, fingerless black hands (capable of gestures like thumbs-up or holding a phone).\n\n- Legs: Two long, thin solid black stick legs emerging directly from the underside of the brain.\n\n- Feet: Simple short, angled black line feet.\n\nArt Style\n\n- 2D hand-drawn storytime cartoon.\n\n- Bold black outlines with slightly imperfect hand-drawn strokes.\n\n- Flat pastel-pink and dusty-mauve fills with clean black linework.\n\n- Minimalist stick-limb anatomy attached to a cartoon brain organ.\n\n- Simple, clean web-comic illustrations.\n\n- Flat solid colors without realistic textures, gradients, or 3D effects.\n\n- Expressive, comedic YouTube storytime animation aesthetic.\n\nCharacter Personality Mischievous, scheming, energetic, persuasive, and chaotic (acts as the protagonist's overthinking brain).\n\nFacial Expressions The character must be able to express:\n\n- Smug / Scheming: One eyebrow raised, one lowered, and a confident half-smirk.\n\n- Excited / Energetic: Raised eyebrows, wide grin, and animated hand gestures.\n\n- Innocent / Playful: High arched eyebrows and a small curved smile.\n\n- Annoyed: Furrowed eyebrows and a flat, unimpressed line mouth.\n\nCharacter Consistency Rules IMPORTANT: Always preserve the exact same character identity.\n\n1. Same bulbous pastel-pink brain shape with black squiggly fold lines.\n\n3. Same dusty-mauve striped cerebellum at the lower back.\n\n5. Same large solid pitch-black circular eyes embedded on the front lobe.\n\n7. Same nose-free facial structure.\n\n9. Same thin black stick arms and legs emerging directly from the brain.\n\n11. Same bold black outline thickness and flat 2D color palette. Only facial expressions, limb poses, movements, and scene-specific props may change.\n\nNegative Prompt No realistic anatomy, no slimy or wet brain textures, no gradients, no 3D rendering, no white eyeballs, no pupils, no nose, no clothing, no detailed fingers, no anime, no photorealism.\n\nFINAL INSTRUCTION: This is the permanent co-star character representing the protagonist's brain. Every new scene must reproduce this exact character design, regardless of location, action, camera angle, or facial expression.", "d2_kid": "SECONDARY CHARACTER MASTER PROMPT (YOUNGER KID / FLASHBACK):\n\n2D Storytime Stickman Cartoon\nCharacter ID: KID_01\n\nCreate a consistent 2D hand-drawn child stickman character based on the following exact visual description.\n\nCharacter Appearance\n\n- Gender: Male\n\n- Age appearance: Young child (approximately 5–8 years old)\n\n- Head: Oversized, slightly lumpy round matte-white head with bold, organic black outlines (proportionally smaller overall height than MAIN_01, but still oversized relative to his tiny body).\n\n- Face: Flat matte-white face with clean black outlines.\n\n- Hair: Messy, spiky jet-black hair (#111111) covering the top crown and fringe of the head.\n\n- Eyes: Two large, solid pitch-black circular eyes with no white sclera or pupils.\n\n- Eyebrows: Thin, slightly worried or innocent black-line eyebrows.\n\n- Nose: No visible nose.\n\n- Mouth: Small, wavy/squiggly black line mouth.\n\n- Body: Very short, slim stickman torso made of a single black line.\n\n- Arms: Short, thin solid black line arms.\n\n- Hands: Simple rounded, fingerless black stick ends.\n\n- Legs: Two short, thin solid black line legs.\n\n- Feet: Simple short, angled black line feet.\n\nArt Style\n\n- 2D hand-drawn storytime cartoon.\n\n- Bold black outlines with slightly imperfect hand-drawn strokes.\n\n- Flat white face and solid jet-black hair.\n\n- Minimalist child stickman anatomy.\n\n- Flat colors without realistic textures, shading, or 3D effects.\n\n- Comedic YouTube storytime animation aesthetic.\n\nCharacter Personality Naive, innocent, clueless, mischievous, and slightly nervous.\n\nFacial Expressions The character must be able to express:\n\n- Nervous / Caught: Wavy squiggly mouth and tilted worried eyebrows.\n\n- Innocent / Blank: Small flat or slightly curved mouth and wide solid black eyes.\n\n- Happy: Simple small curved smile.\n\nCharacter Consistency Rules IMPORTANT: Always preserve the exact same character identity.\n\n1. Same messy, spiky jet-black hairstyle.\n\n3. Same oversized lumpy round white head.\n\n5. Same large solid pitch-black circular eyes.\n\n7. Same short child-sized slim stickman body and limbs.\n\n9. Same bold black outline thickness and flat 2D colors. Only facial expressions, body poses, and props may change.\n\nNegative Prompt No adult height, no brown hair, no white eyeballs, no pupils, no nose, no realistic human anatomy, no detailed fingers, no 3D rendering, no photorealism, no complex clothing, no gradients.", "d2_scene": "MASTER SCENE & BACKGROUND PROMPT:\n\n2D Storytime Stickman Cartoon\nEnvironment ID: SCENE_MASTER_01\n\nCreate a consistent 2D hand-drawn cartoon background and environment based on the exact art style, color palette, and minimalist illustration rules below.\n\nArt Style & Illustration Rules\n\n- Medium: 2D hand-drawn digital web-comic animation background (similar to *Casually Explained* and *TheOdd1sOut*).\n\n- Linework: Medium-to-thick black ink outlines with slightly imperfect, organic, hand-sketched strokes and slightly wobbly perspective lines.\n\n- Color & Shading: Strictly flat, solid 2D color fills with zero gradients, zero lighting textures, and zero 3D rendering. Use only occasional simple flat drop-shadow ovals beneath objects or characters.\n\n- Composition: Minimalist, uncluttered stage-like layouts with large negative space on walls so foreground stick characters stand out clearly.\n\nColor Palette\n\n- Primary Bright Stage / Split-Screen Backdrop: Pastel sky-blue (#8BE5F9) with a hand-drawn vertical wavy black divider line.\n\n- Night Bedroom Walls: Muted slate-blue (#3762A6) with deep navy night sky (#111836) outside windows, dark brown wood (#593821), navy bedding (#233E73), and light-blue pillow (#9ED0F5).\n\n- Daytime Living Room / Interior: Warm cream/beige walls (#F9E3C6), light tan/ochre diagonal floorboards (#E8B274), deep crimson armchair (#A81818), and reddish-brown oval rug (#6E3524).\n\n- Props & Accents: Solid pitch-black silhouettes (#000000) for rotary phones and electronics, neon green digital clock digits (#5CE65C), and off-white/yellow sticky notes and charts.\n\nEnvironment Variants (Modular Settings)\n\n1. Split-Screen Phone Stage (SCENE_PHONE_01): Flat pastel sky-blue wall divided vertically by a wobbly black ink line. Minimal props: two oversized, chunky solid-black retro rotary telephones on opposite sides with hand-drawn coiled black cords.\n\n3. Late-Night Bedroom (SCENE_BED_01): Slate-blue wall, simple brown wooden headboard with navy blanket and light-blue pillow, brown nightstand holding a black rectangular digital alarm clock displaying bright green numbers (10:00 PM or 2:00 AM), and a four-pane brown window showing a dark starry night sky with a flat white circle moon.\n\n5. Daytime Living Room (SCENE_ROOM_01): Minimalist corner with warm cream walls, slightly angled tan wooden floorboards with black plank lines, a simple plush red armchair on the far right, and a flat brown oval rug on the floor.\n\n7. Brain's Office / Control Room (SCENE_OFFICE_01): Muted sage-gray wall (#A6B8B3), gray metal filing cabinets, stacked paper piles, a simple world map, and white pinned charts/sticky notes with crude hand-drawn graphs and doodles.\n\nScene Consistency Rules\n\n1. Keep backgrounds sparse—never overcrowd with unnecessary clutter or tiny details.\n\n3. Maintain slightly imperfect, hand-drawn perspective (avoid rigid CAD/architectural ruler lines).\n\n5. Keep all walls and surfaces 100% flat-colored with bold black outlines on furniture and props.\n\n7. Ensure high contrast between background colors and black-and-white stick characters.\n\nNegative Prompt No realistic interiors, no 3D architectural rendering, no gradients, no volumetric lighting, no cast shadows from light sources, no wood grain or fabric textures, no painterly brushstrokes, no anime scenery, no cluttered backgrounds.\n\nFINAL INSTRUCTION: This is the permanent background and environment style guide for the entire animation series. Every scene must match this flat, hand-drawn minimalist web-comic aesthetic, regardless of room, time of day, or camera angle.", "d3_char": "MAIN CHARACTER MASTER PROMPT\n2D Educational Stickman Cartoon\nCharacter ID: MAIN_01\n\nCreate a consistent 2D hand-drawn cartoon stickman character based on the following exact visual description.\n\nCharacter Appearance\n\n- Gender: Male / Neutral stickman\n\n- Age appearance: Young adult (approximately 25–30 years old)\n\n- Head: Large, clean circular white head with a smooth, slightly hand-drawn black outline.\n\n- Face: Plain matte-white face with minimalist features.\n\n- Hair: Completely bald / hairless smooth round head.\n\n- Eyes: Two small, solid pitch-black dot eyes positioned close together, slightly off-center toward the direction of gaze.\n\n- Eyebrows: Short, thin, slightly curved black dash eyebrows floating just above each dot eye.\n\n- Nose: No visible nose.\n\n- Mouth: Tiny, simple curved or straight black line mouth (or small dark oval when shocked/rushing).\n\n- Body: Very thin, uniform solid black line stick torso.\n\n- Arms: Thin, flexible solid black line arms.\n\n- Hands: Small, simple rounded black-filled mitten/dot hands when gripping objects, or plain line ends when resting.\n\n- Legs: Two long, thin solid black line legs.\n\n- Feet: Small, solid black teardrop/oval feet angled forward.\n\nArt Style\n\n- 2D hand-drawn educational / self-improvement YouTube cartoon.\n\n- Clean, consistent medium-weight black ink outlines.\n\n- Flat solid colors with muted, desaturated earthy/pastel tones in the environment.\n\n- Ultra-minimalist stickman anatomy with an oversized circular head and spindly stick limbs.\n\n- Zero gradients, textures, or 3D shading.\n\n- Subtle hand-drawn motion lines when moving fast.\n\nCharacter Personality\nCalm, observant, relatable, slightly overwhelmed by daily routines, and thoughtful.\n\nFacial Expressions\nThe character must be able to express:\n\n- Neutral / Focused: Tiny straight or slightly curved line mouth with level eyebrows.\n\n- Tired / Overwhelmed: Drooping eyebrows, tiny downward-curved mouth, and slumped posture.\n\n- Rushing / Panicked: Small open dark oval mouth, raised angled eyebrows, and motion lines around the head/body.\n\n- Thoughtful / Calm: Slightly tilted head, gently arched eyebrows, and relaxed posture.\n\nCharacter Consistency Rules\nIMPORTANT: Always preserve the exact same character identity.\n\n1. Always completely bald smooth circular white head (never add hair to MAIN_01).\n\n3. Same small, closely spaced solid black dot eyes.\n\n5. Same short floating dash eyebrows and tiny mouth.\n\n7. Same nose-free minimalist facial structure.\n\n9. Same ultra-thin black line torso, arms, and legs.\n\n11. Same small solid black teardrop feet and simple dot hands.\n\n13. Same medium-weight black outline thickness and head-to-body ratio.\n14. Only facial expressions, body poses, movements, and scene-specific props may change.\n\nNegative Prompt\nNo hair on the main character, no white eyeballs, no pupils, no nose, no realistic human anatomy, no clothing, no muscular body, no detailed fingers, no anime, no 3D rendering, no photorealism, no gradients, no heavy shading.\n\nFINAL INSTRUCTION: This is the permanent main character for the entire animation series. Every new scene must reproduce this exact character design, regardless of location, action, camera angle, or facial expression.", "d3_scene": "SCENE & BACKGROUND MASTER PROMPT\n2D Educational Stickman Cartoon\nEnvironment ID: SCENE_MASTER_02\n\nCreate a consistent 2D hand-drawn cartoon background based on this exact art style, color palette, and minimalist illustration structure.\n\nArt Style & Illustration Rules\n\n- Medium: 2D hand-drawn educational / self-improvement YouTube cartoon background.\n\n- Linework: Medium-weight black ink outlines with slightly organic, hand-drawn perspective lines.\n\n- Color & Shading: Flat solid colors in muted, desaturated earthy tones; zero gradients, lighting textures, or 3D shading.\n\n- Composition: Clean, uncluttered everyday settings with ample negative space so foreground stickman characters stand out clearly.\n\nColor Palette\n\n- Walls & Surfaces: Warm off-white/cream (#F3EFE6), soft cool gray (#A9B2B5), and light concrete sidewalk gray (#DCDAD5).\n\n- Wood & Furniture: Muted medium-dark brown (#695346), slate-gray office chairs/appliances (#7E9496), and dark charcoal asphalt (#424242).\n\n- Accents: Desaturated sticky-note pastels (soft yellow, muted sage green, dusty lavender, slate blue) and dull terracotta/brick red (#B85348).\n\nEnvironment Variants (Modular Settings)\n\n1. Home Office Desk (SCENE_DESK_01): Warm off-white wall, dark brown wooden desk, large gray computer monitor displaying pastel sticky notes with simple line text, gray keyboard and mouse, stacked white papers, and a small potted green plant.\n\n3. Corporate Office (SCENE_OFFICE_02): Off-white wall, gray floor, long brown executive desk with a sage-gray swivel office chair, and loose paper sheets with motion lines.\n\n5. Morning Kitchen (SCENE_KITCHEN_01): Warm off-white wall, brown wooden counter, upper brown cabinets, slate-blue refrigerator, a window with light-blue glass, a glass coffee pot, bills on the counter, and a brown paper grocery bag with bread, greens, jam, and eggs.\n\n7. City Sidewalk (SCENE_STREET_01): High-angle diagonal perspective of a light-gray paved sidewalk with hand-drawn grid lines, storefront windows, dark charcoal road with white crosswalk stripes, and minimal background stick pedestrians.\n\nScene Consistency Rules\n\n1. Keep all backgrounds clean, flat-colored, and free of realistic textures.\n\n3. Use muted, low-saturation earthy and neutral tones so white/black characters pop.\n\n5. Draw text on papers, screens, and sticky notes as simple horizontal black squiggles or minimal labels.\n\n7. Maintain medium-weight black ink outlines across all furniture, props, and architecture.\n\nNegative Prompt No realistic interiors, no bright neon colors, no gradients, no 3D rendering, no cast shadows, no wood or fabric textures, no painterly brushstrokes, no anime scenery, no cluttered micro-details.\n\nFINAL INSTRUCTION: This is the permanent background and environment style guide for the series. Every new scene must reproduce this flat, muted, hand-drawn educational cartoon aesthetic across all locations and camera angles.", "d4_char": "MAIN CHARACTER MASTER PROMPT\n2D High-Contrast Silhouette Explainer Animation\nCharacter ID: MAIN_01\n\nCreate a consistent 2D flat vector silhouette character based on the following exact visual description.\n\nCHARACTER APPEARANCE:\n\n- Gender: Male / Neutral minimalist pictogram figure\n- Age appearance: Ageless / Universal adult representation\n- Head: Clean, detached, solid pure-white (`#FFFFFF`) circular head floating slightly above the shoulders with no neck line.\n- Face: Plain solid pure-white face with ultra-minimalist black features only when expressing specific emotions; otherwise completely blank white.\n- Hair: Completely bald / smooth circular white head.\n- Eyes: None by default (blank white head), or two small solid pitch-black (`#000000`) dot eyes when expressing curiosity or focus.\n- Eyebrows: No eyebrows.\n- Nose: No visible nose.\n- Mouth: None by default (blank white head), or a single short, slightly curved pitch-black line mouth when expressing doubt, hesitation, or overthinking.\n- Body: Thick, solid pure-white (`#FFFFFF`) pictogram torso with smoothly rounded shoulders and a uniform rectangular-to-tapered silhouette (no clothing details or seams).\n- Arms: Thick, smooth solid pure-white rounded tubular arms with clean pitch-black (`#000000`) separation outlines wherever an arm overlaps the torso, head, or another limb.\n- Hands: Simple rounded, mitten-like smooth white ends on the arms with no individual fingers.\n- Legs: Two thick, solid pure-white straight tubular legs with clean black separation lines when crossed or seated.\n- Feet: Smoothly rounded, semicircular ends at the bottom of the legs (no separate shoes or toes).\n\nART STYLE:\n\n- 2D minimalist vector explainer / psychology & self-improvement YouTube animation.\n- High-contrast monochrome palette: solid pure-white (`#FFFFFF`) characters isolated on a solid pitch-black (`#000000`) background.\n- Crisp, uniform medium-to-thick pitch-black (`#000000`) inner outline strokes strictly used to separate overlapping white limbs and body parts.\n- Simple geometric pictogram anatomy with smooth rounded caps and corners.\n- Zero gradients, zero textures, zero drop shadows, and zero 3D shading.\n- Optional small, detailed colorful vector icons inside white-outlined speech/thought bubbles, and clean white casual rounded sans-serif / hand-lettered text floating in the negative black space.\n\nCHARACTER PERSONALITY:\n\nReflective, relatable, analytical, occasionally anxious or overthinking, and conversational.\n\nFACIAL EXPRESSIONS & BODY LANGUAGE:\n\nThe character must be able to express:\n\n- Neutral / Conversational: Blank white circular head, relaxed upright or seated posture, using open rounded hand gestures while talking.\n- Anxious / Overthinking: Hand raised to the chin/mouth area (with black outline separating the hand from the face), blank head or a single small downward-curved black line mouth.\n- Confident / Contemplative: Blank white circular head, standing upright with both hands resting on hips, elbows angled outward.\n- Curious / Analytical: Leaning forward in an investigative stance, inspecting clues or props.\n\nCHARACTER CONSISTENCY RULES:\n\nIMPORTANT: Always preserve the exact same character identity.\n\n1. Always a solid pure-white (`#FFFFFF`) silhouette on a solid pitch-black (`#000000`) background.\n2. Always a detached, smooth, hairless circular white head floating slightly above the rounded shoulders.\n3. Always maintain blank white facial features by default, using only minimal black dot eyes or a single curved line mouth when strictly required by the emotion.\n4. Always use thick, smooth, rounded tubular limbs (never thin stick lines).\n5. Always apply clean pitch-black (`#000000`) separation outlines wherever arms or legs overlap the body.\n6. Always keep rounded limb endings with zero fingers, toes, or clothing textures.\n7. Same head-to-body proportions and rounded pictogram geometry across every frame.\n8. Only body poses, arm gestures, minimal mouth/eye expressions, and scene-specific props/bubbles may change.\n\nNEGATIVE PROMPT:\n\nNo thin stick-figure lines, no hair on MAIN_01, no gray or off-white backgrounds, no realistic human anatomy, no detailed clothing folds, no individual fingers, no white eyeballs, no nose, no eyebrows, no anime, no 3D rendering, no photorealism, no gradients, no shadows, no sketchy rough pencil textures.\n\nFINAL INSTRUCTION: This is the permanent main character for the entire animation series. Every new scene must reproduce this exact solid-white pictogram character design on a pitch-black background, regardless of action, camera angle, or emotional state.", "d4_scene": "SCENE & BACKGROUND MASTER PROMPT\n2D Educational Stickman Cartoon\nEnvironment ID: SCENE_MASTER_02\n\nCreate a consistent 2D hand-drawn cartoon background based on this exact art style, color palette, and minimalist illustration structure.\n\nArt Style & Illustration Rules\n\n- Medium: 2D hand-drawn educational / self-improvement YouTube cartoon background.\n\n- Linework: Medium-weight black ink outlines with slightly organic, hand-drawn perspective lines.\n\n- Color & Shading: Flat solid colors in muted, desaturated earthy tones; zero gradients, lighting textures, or 3D shading.\n\n- Composition: Clean, uncluttered everyday settings with ample negative space so foreground stickman characters stand out clearly.\n\nColor Palette\n\n- Walls & Surfaces: Warm off-white/cream (#F3EFE6), soft cool gray (#A9B2B5), and light concrete sidewalk gray (#DCDAD5).\n\n- Wood & Furniture: Muted medium-dark brown (#695346), slate-gray office chairs/appliances (#7E9496), and dark charcoal asphalt (#424242).\n\n- Accents: Desaturated sticky-note pastels (soft yellow, muted sage green, dusty lavender, slate blue) and dull terracotta/brick red (#B85348).\n\nEnvironment Variants (Modular Settings)\n\n1. Home Office Desk (SCENE_DESK_01): Warm off-white wall, dark brown wooden desk, large gray computer monitor displaying pastel sticky notes with simple line text, gray keyboard and mouse, stacked white papers, and a small potted green plant.\n\n3. Corporate Office (SCENE_OFFICE_02): Off-white wall, gray floor, long brown executive desk with a sage-gray swivel office chair, and loose paper sheets with motion lines.\n\n5. Morning Kitchen (SCENE_KITCHEN_01): Warm off-white wall, brown wooden counter, upper brown cabinets, slate-blue refrigerator, a window with light-blue glass, a glass coffee pot, bills on the counter, and a brown paper grocery bag with bread, greens, jam, and eggs.\n\n7. City Sidewalk (SCENE_STREET_01): High-angle diagonal perspective of a light-gray paved sidewalk with hand-drawn grid lines, storefront windows, dark charcoal road with white crosswalk stripes, and minimal background stick pedestrians.\n\nScene Consistency Rules\n\n1. Keep all backgrounds clean, flat-colored, and free of realistic textures.\n\n3. Use muted, low-saturation earthy and neutral tones so white/black characters pop.\n\n5. Draw text on papers, screens, and sticky notes as simple horizontal black squiggles or minimal labels.\n\n7. Maintain medium-weight black ink outlines across all furniture, props, and architecture.\n\nNegative Prompt No realistic interiors, no bright neon colors, no gradients, no 3D rendering, no cast shadows, no wood or fabric textures, no painterly brushstrokes, no anime scenery, no cluttered micro-details."};
+const DESIGNS = [
+  { title:"Curly Hair Stickman", sub:"2D Educational Cartoon · အမူအရာ ၆ မျိုး", img:"img/design-1.webp", video:"videos/design-1.mp4",
+    prompts:[ {label:"👤 Character Prompt", key:"d1_char"}, {label:"🎬 Scene Prompt", key:"d1_scene"} ] },
+  { title:"Storytime Stickman + Brain", sub:"2D Storytime Cartoon · Main · Brain · Kid Flashback", img:"img/design-2.webp", video:"videos/design-2.mp4",
+    prompts:[ {label:"👤 Main Character", key:"d2_main"}, {label:"🧠 Brain Co-star", key:"d2_brain"}, {label:"🧒 Kid (Flashback)", key:"d2_kid"}, {label:"🎬 Scene Prompt", key:"d2_scene"} ] },
+  { title:"Bald Stickman Character Sheet", sub:"2D Educational Cartoon · Character Sheet", img:"img/design-3.webp", video:"videos/design-3.mp4",
+    prompts:[ {label:"👤 Character Prompt", key:"d3_char"}, {label:"🎬 Scene Prompt", key:"d3_scene"} ] },
+  { title:"White Silhouette Pictogram", sub:"2D High-Contrast Silhouette Explainer", img:"img/design-4.webp", video:"videos/design-4.mp4",
+    prompts:[ {label:"👤 Character Prompt", key:"d4_char"}, {label:"🎬 Scene Prompt", key:"d4_scene"} ] }
+];
+
+/* ================= helpers ================= */
+const $ = s => document.querySelector(s);
+const store = {
+  get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+let tt; function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("show"); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove("show"),2400); }
+async function copyText(t){
+  try{ await navigator.clipboard.writeText(t); return true; }
+  catch(e){
+    const ta=document.createElement("textarea"); ta.value=t; ta.className="copy-fallback";
+    document.body.appendChild(ta); ta.select(); let ok=false;
+    try{ ok=document.execCommand("copy"); }catch(_){}
+    ta.remove(); return ok;
+  }
+}
+
+document.querySelectorAll(".brand-name").forEach(el => el.textContent = CONFIG.brand);
+document.querySelectorAll(".contact-num").forEach(el => el.textContent = CONFIG.contactViber);
+document.querySelectorAll(".viber-link").forEach(el => el.href = "viber://chat?number=" + encodeURIComponent(CONFIG.contactViberRaw));
+document.querySelectorAll(".viber-add").forEach(el => el.href = CONFIG.viberAddLink);
+$("#yr").textContent = new Date().getFullYear();
+
+/* ================= design cards ================= */
+$("#grid").innerHTML = DESIGNS.map((d,i) => `
+  <article class="card" data-d="${i}">
+    <div class="show">
+      <span class="badge">📷 ပုံ</span>
+      <div class="track">
+        <div class="slide"><img loading="lazy" alt="${esc(d.title)}" src="${d.img}"></div>
+        <div class="slide" data-vslide>
+          <video preload="metadata" controls playsinline loop src="${d.video}"></video>
+          <div class="soon">🎬 ဗီဒီယို နမူနာ<br>မကြာမီ ထည့်ပေးပါမည်</div>
+        </div>
+      </div>
+      <button class="arrow prev" aria-label="ရှေ့">‹</button>
+      <button class="arrow next" aria-label="နောက်">›</button>
+      <div class="dots"><button class="dot on" aria-label="ပုံ"></button><button class="dot" aria-label="ဗီဒီယို"></button></div>
+    </div>
+    <div class="card-body">
+      <h3>${esc(d.title)}</h3>
+      <div class="sub">${esc(d.sub)}</div>
+      ${d.prompts.map((p,j) => `
+        <div class="prow">
+          <div class="prow-top">
+            <span class="plabel">${p.label}</span>
+            <span class="pbtns"><button class="mini" data-view>ကြည့်</button><button class="copy" data-copy="${p.key}">📋 ကူးမယ်</button></span>
+          </div>
+          <pre class="ptext">${esc(PROMPT_TEXT[p.key]||"")}</pre>
+        </div>`).join("")}
+    </div>
+  </article>`).join("");
+
+document.querySelectorAll(".card").forEach(card => {
+  const track = card.querySelector(".track"), dots = card.querySelectorAll(".dot"), badge = card.querySelector(".badge");
+  const vs = card.querySelector("[data-vslide]"), video = vs.querySelector("video");
+  let idx = 0, x0 = null;
+  video.addEventListener("error", () => vs.classList.add("nov"));
+  function go(n){
+    idx = (n + 2) % 2;
+    track.style.transform = `translateX(${-idx*100}%)`;
+    dots.forEach((d,k) => d.classList.toggle("on", k===idx));
+    badge.textContent = idx ? "🎬 ဗီဒီယို" : "📷 ပုံ";
+    if(idx===0) video.pause();
+  }
+  card.querySelector(".prev").onclick = () => go(idx-1);
+  card.querySelector(".next").onclick = () => go(idx+1);
+  dots.forEach((d,k) => d.onclick = () => go(k));
+  const show = card.querySelector(".show");
+  show.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive:true});
+  show.addEventListener("touchend", e => {
+    if(x0===null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if(Math.abs(dx) > 50) go(idx + (dx<0 ? 1 : -1));
+  });
+});
+$("#grid").addEventListener("click", async e => {
+  const v = e.target.closest("[data-view]");
+  if(v){ const row = v.closest(".prow"); row.classList.toggle("open"); v.textContent = row.classList.contains("open") ? "ဖျောက်" : "ကြည့်"; return; }
+  const b = e.target.closest("[data-copy]"); if(!b) return;
+  const ok = await copyText(PROMPT_TEXT[b.dataset.copy]);
+  if(ok){
+    b.classList.add("done"); b.textContent = "✓ ကူးပြီးပြီ!";
+    toast("Prompt ကူးပြီးပါပြီ — AI tool မှာ Paste လုပ်ပါ");
+    setTimeout(() => { b.classList.remove("done"); b.textContent = "📋 ကူးမယ်"; }, 1800);
+  } else toast("အလိုအလျောက် ကူးမရပါ — 'ကြည့်' ကိုနှိပ်ပြီး စာသားကို ရွေးကူးပါ");
+});
+
+/* ================= tutorial ================= */
+$("#steps").innerHTML = CONFIG.tutorial.map((s,i) => `
+  <div class="step">
+    <div class="vbox"><video controls preload="metadata" playsinline src="${s.video}"></video><div class="soon">▶ Tutorial ဗီဒီယို<br>မကြာမီ ထည့်ပေးပါမည်</div></div>
+    <div class="step-body"><span class="step-num">အပိုင်း ${"၁၂၃"[i]}</span><h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p></div>
+  </div>`).join("");
+document.querySelectorAll(".vbox video").forEach(v => v.addEventListener("error", () => v.parentElement.classList.add("nov")));
+
+/* ================= leads ================= */
+function cleanPhone(cc, raw){
+  raw = String(raw).replace(/[၀-၉]/g, c => String(c.charCodeAt(0) - 0x1040)).replace(/[０-９]/g, c => String(c.charCodeAt(0) - 0xFF10));
+  let d = raw.replace(/\D/g,""); if(d.startsWith("0")) d = d.slice(1);
+  const ccd = cc.replace("+",""); if(d.startsWith(ccd) && d.length > 10) d = d.slice(ccd.length);
+  return (d.length >= 7 && d.length <= 12) ? cc + d : null;
+}
+function saveLead(phone, source, extra){
+  const leads = store.get("pv_leads") || []; leads.push(Object.assign({phone, source, at:new Date().toISOString()}, extra||{})); store.set("pv_leads", leads);
+  if(CONFIG.leadWebhook){
+    try{ fetch(CONFIG.leadWebhook,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(Object.assign({phone,source,page:location.href}, extra||{}))}).catch(()=>{}); }catch(e){}
+  }
+}
+
+/* ================= gate ================= */
+let gateMode = "free";
+function openSite(scrollTo){
+  $("#gate").classList.add("hide"); document.body.classList.remove("locked");
+  if(scrollTo) setTimeout(() => document.getElementById(scrollTo).scrollIntoView({behavior:"smooth"}), 250);
+}
+if(store.get("pv_access")) openSite();
+document.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => {
+  gateMode = b.dataset.mode;
+  $("#step2Title").textContent = gateMode==="tutorial" ? "အခမဲ့ Tutorial ကြည့်ရန်" : "Viber နံပါတ် ထည့်ပါ";
+  $("#step2Sub").textContent = gateMode==="tutorial" ? "Viber နံပါတ်ထည့်ပြီး ၃ ပိုင်း Tutorial ကြည့်ပါ။ Prompt အားလုံးလည်း ဖွင့်ပေးပါမယ်။" : "Prompt အားလုံးကို ချက်ချင်း ဖွင့်ပေးပါမယ်။ Prompt အသစ်တွေကို Viber ကနေ ပို့ပေးပါမယ်။";
+  $("#gateSubmit").textContent = gateMode==="tutorial" ? "Tutorial ကြည့်မယ် →" : "ဝင်ကြည့်မယ် →";
+  $("#modal").classList.add("ask"); setTimeout(() => $("#gateNum").focus(), 50);
+}));
+$("#gateBack").addEventListener("click", () => { $("#modal").classList.remove("ask"); $("#gateErr").textContent=""; });
+function submitGate(){
+  const phone = cleanPhone($("#gateCc").value, $("#gateNum").value);
+  if(!phone){ $("#gateErr").textContent = "Viber နံပါတ် မှန်ကန်စွာ ထည့်ပါ။"; return; }
+  $("#gateErr").textContent = "";
+  saveLead(phone, gateMode==="tutorial" ? "popup-tutorial" : "popup-free");
+  store.set("pv_access", {phone});
+  openSite(gateMode==="tutorial" ? "tutorial" : null);
+  toast("ကြိုဆိုပါတယ်! Prompt အားလုံး ဖွင့်ပြီးပါပြီ 🎉");
+}
+$("#gateSubmit").addEventListener("click", submitGate);
+$("#gateNum").addEventListener("keydown", e => { if(e.key==="Enter"){ e.preventDefault(); submitGate(); } });
+
+/* ================= membership + payment ================= */
+const PAY = { kbzNumber:"09766050139", kbzName:"Pwint Pwint San" };
+const PLANS = {
+  1:{ name:"Plan 1 — Automation System", amount:"250,000 ကျပ်", per:"တစ်လ", source:"order-plan1",
+      next:["Viber မှာ ငွေလွှဲမှုကို အတည်ပြုပေးပါမယ်။","အတည်ပြုပြီးရင် Automation System ကို စတင်ပေးပါမယ်။","နေ့စဉ် Generate လုပ်ထားတဲ့ ဗီဒီယိုတွေကို သင့်ထံ ပို့ပေးပါမယ်။"] },
+  2:{ name:"Plan 2 — Community Group (Viber)", amount:"30,000 ကျပ်", per:"", source:"order-plan2",
+      next:["Viber မှာ ငွေလွှဲမှုကို အတည်ပြုပေးပါမယ်။","အတည်ပြုပြီးရင် Viber Community Group Link ကို ပို့ပေးပါမယ်။"] }
+};
+const pp = $("#plansPop"), pm = $("#plansModal");
+let order = null, chkTimer = null;
+
+function setStep(n){
+  pm.dataset.step = n;
+  document.querySelectorAll("#stepper span").forEach(s => {
+    const k = +s.dataset.n; s.classList.toggle("on", k===n); s.classList.toggle("done", k<n);
+  });
+  pm.scrollTop = 0;
+}
+function splitPhone(full){
+  full = full || ""; const ccs = ["+95","+66","+65","+60","+1"];
+  const cc = ccs.find(c => full.startsWith(c)) || "+95";
+  const rest = full.startsWith(cc) ? full.slice(cc.length) : full.replace(/\D/g,"");
+  return { cc, num: rest ? "0" + rest.replace(/^0/,"") : "" };
+}
+function plans(open){
+  if(!open){ clearTimeout(chkTimer); }
+  pp.classList.toggle("hide", !open);
+  if(open){ order = null; $("#payErr").textContent = ""; $("#payCheck").disabled = false; setStep(1); }
+}
+function pickPlan(n){
+  const p = PLANS[n];
+  order = { plan:n };
+  $("#sumPlan").textContent = p.name;
+  $("#sumAmt").textContent = p.amount + (p.per ? " / " + p.per : "");
+  $("#sumAmt2").textContent = p.amount;
+  const acc = store.get("pv_access"), sp = splitPhone(acc && acc.phone);
+  if(!$("#payNum").value && sp.num){ $("#payCc").value = sp.cc; $("#payNum").value = sp.num; }
+  $("#payErr").textContent = "";
+  setStep(2);
+  setTimeout(() => $("#payNum").focus(), 60);
+}
+function orderNo(){
+  const d = new Date(), z = n => String(n).padStart(2,"0");
+  return "PV-" + d.getFullYear().toString().slice(2) + z(d.getMonth()+1) + z(d.getDate()) + "-" + Math.floor(1000 + Math.random()*9000);
+}
+function recapHtml(o){
+  const p = PLANS[o.plan];
+  return `Order နံပါတ် — <b>${o.no}</b><br>Plan — <b>${esc(p.name)}</b><br>ငွေပမာဏ — <b>${p.amount}</b><br>Viber — <b>${esc(o.phone)}</b>` + (o.txn ? `<br>ငွေလွှဲ ID — <b>${esc(o.txn)}</b>` : "");
+}
+function payCheck(){
+  if(pm.dataset.step !== "2" || !order || !PLANS[order.plan]) return;
+  const phone = cleanPhone($("#payCc").value, $("#payNum").value);
+  if(!phone){ $("#payErr").textContent = "Viber နံပါတ် မှန်ကန်စွာ ထည့်ပါ။"; $("#payNum").focus(); return; }
+  const txn = $("#payTxn").value.replace(/\D/g,"");
+  if($("#payTxn").value.trim() && txn.length < 4){ $("#payErr").textContent = "ငွေလွှဲ ID က ဂဏန်း ၄ လုံးအထက် ဖြစ်ရပါမယ်။ မသိရင် ကွက်လပ်ထားခဲ့လို့ ရပါတယ်။"; $("#payTxn").focus(); return; }
+  $("#payErr").textContent = "";
+  $("#payCheck").disabled = true;
+  order.phone = phone; order.txn = txn; order.no = orderNo();
+  $("#chkLoading").style.display = ""; $("#chkDone").style.display = "none";
+  setStep(3);
+  saveLead(phone, PLANS[order.plan].source, { order:order.no, plan:PLANS[order.plan].name, amount:PLANS[order.plan].amount, txn, status:"payment-submitted" });
+  chkTimer = setTimeout(() => {
+    $("#recap").innerHTML = recapHtml(order);
+    $("#chkLoading").style.display = "none"; $("#chkDone").style.display = "";
+    $("#payCheck").disabled = false;
+  }, 1600);
+}
+function finishOrder(){
+  if(!order || !order.no) return;
+  const p = PLANS[order.plan];
+  $("#thanksRecap").innerHTML = recapHtml(order);
+  $("#nextSteps").innerHTML = p.next.map(s => "<li>"+esc(s)+"</li>").join("");
+  store.set("pv_orders", (store.get("pv_orders")||[]).concat([{ no:order.no, plan:order.plan, phone:order.phone, at:new Date().toISOString() }]));
+  setStep(4);
+}
+document.querySelectorAll("[data-plans]").forEach(b => b.addEventListener("click", () => plans(true)));
+document.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => pickPlan(+b.dataset.pick)));
+document.querySelectorAll("[data-goto]").forEach(b => b.addEventListener("click", () => setStep(+b.dataset.goto)));
+$("#payCheck").addEventListener("click", payCheck);
+$("#payNum").addEventListener("keydown", e => { if(e.key==="Enter"){ e.preventDefault(); payCheck(); } });
+$("#payTxn").addEventListener("keydown", e => { if(e.key==="Enter"){ e.preventDefault(); payCheck(); } });
+$("#orderFinish").addEventListener("click", finishOrder);
+$("#thanksClose").addEventListener("click", () => plans(false));
+$("#kbzCopy").addEventListener("click", async () => {
+  const ok = await copyText(PAY.kbzNumber);
+  toast(ok ? "KBZ Pay နံပါတ် ကူးပြီးပါပြီ" : "ကူးမရပါ — နံပါတ်ကို ကိုယ်တိုင်ရိုက်ထည့်ပါ");
+});
+$("#plansClose").addEventListener("click", () => plans(false));
+/* backdrop click only closes on the plan list / thank-you steps, so a double-tap during payment can never lose progress */
+pp.addEventListener("click", e => { if(e.target===pp && (pm.dataset.step==="1" || pm.dataset.step==="4")) plans(false); });
+document.addEventListener("keydown", e => { if(e.key==="Escape" && !pp.classList.contains("hide")) plans(false); });
+</script>
+</body>
+</html>
