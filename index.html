@@ -186,6 +186,12 @@ p{margin:0}
 .ex .wide{grid-column:1 / -1}
 @media (min-width:600px){.ex .wide{grid-column:span 2}}
 .more{justify-self:start}
+.fchips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.fchip{flex:0 0 auto;font:600 .9rem/1.3 var(--f-body);padding:8px 14px;border-radius:999px;border:1px solid var(--line-2);background:var(--card);color:var(--ink);cursor:pointer;white-space:nowrap}
+.fchip b{font-weight:700;color:var(--ink-2);margin-left:4px}
+.fchip[aria-pressed="true"]{background:var(--btn-bg);color:var(--btn-fg);border-color:var(--btn-bg)}
+.fchip[aria-pressed="true"] b{color:inherit;opacity:.75}
+.fchip:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
 
 /* feature cards (automation list) */
 .fcards{display:grid;gap:14px}
@@ -330,8 +336,43 @@ var V = {
  "anim-transition":{l:"Transition & Text Animation",d:"0:40",r:"p"},
  "anim-text":{l:"Text Animation",d:"0:10",r:"p"},
  "explain-audit":{l:"Internal Audit Explainer (Burmese)",d:"1:31",r:"p"},
- "explain-howto":{l:"How-to Explainer · Chocolate Mousse",d:"0:45",r:"p"}
+ "explain-howto":{l:"How-to Explainer · Chocolate Mousse",d:"0:45",r:"p"},
+ /* added 2026-11 */
+ "ad-teton-kitchen":{l:"Restaurant Ad · Game Day Sushi Bar",d:"1:26",r:"p"},
+ "model-noodle":{l:"AI Model · Noodle Restaurant",d:"0:30",r:"p"},
+ "ad-food-shrimp":{l:"Food Visual · Spicy Shrimp",d:"0:08",r:"p"},
+ "ad-food-khaosoi":{l:"Food Visual · Khao Soi Noodles",d:"0:08",r:"p"},
+ "ad-travel-master":{l:"Travel Agency Ad · Travel Master Pattaya",d:"0:35",r:"p"},
+ "ad-travel-beach":{l:"Travel Ad · Island Day Trip",d:"0:30",r:"p"},
+ "ad-pokhara":{l:"Travel Guide · Top 5 Places in Pokhara",d:"0:10",r:"p"},
+ "ad-beauty-serum":{l:"Beauty Serum Ad",d:"0:30",r:"p"},
+ "model-bridal-gold":{l:"Gold Jewelry Ad · Bridal Model",d:"0:10",r:"p"},
+ "model-fashion":{l:"AI Fashion Model · Outfit Showcase",d:"0:31",r:"p"},
+ "model-myanmar-dress":{l:"AI Model · Myanmar Traditional Dress",d:"0:20",r:"p"},
+ "ad-cctv":{l:"CCTV Security Service Ad",d:"0:20",r:"p"},
+ "explain-hr":{l:"Corporate HR Video",d:"0:10",r:"p"},
+ "ad-planner-app":{l:"App Ad · Habit & Task Planner",d:"0:10",r:"p"},
+ "ad-telegram-app":{l:"App Ad · Telegram Reminder",d:"0:10",r:"p"},
+ "edu-ielts":{l:"10 Must-Know IELTS Words",d:"0:40",r:"p"},
+ "explain-whiteboard":{l:"Whiteboard Explainer · Workplace Conflict",d:"0:28",r:"p"},
+ "edu-thai-words":{l:"Thai Lesson · Classroom Words",d:"0:10",r:"p"},
+ "edu-phrases":{l:"Thai Lesson · Everyday Phrases",d:"0:10",r:"p"},
+ "edu-conversation":{l:"Thai Lesson · Café Conversation",d:"0:10",r:"p"},
+ "tut-ai-tools":{l:"AI Tools Tutorial · Talking Head",d:"1:05",r:"p"},
+ "anim-stick-office":{l:"Stickman Story · Office Stress",d:"0:10",r:"p"},
+ "anim-stick-couple":{l:"Stickman Story · Relationship",d:"0:10",r:"p"},
+ "anim-ai-bot":{l:"3D Animation · AI Bot",d:"0:10",r:"p"}
 };
+/* Portfolio gallery: grouped by industry, newest first inside each group */
+var GAL=[
+ {id:"food",l:"Food & Restaurant",v:["ad-teton-kitchen","model-noodle","ad-food-shrimp","ad-food-khaosoi","model-restaurant","ad-food"]},
+ {id:"travel",l:"Travel & Tourism",v:["ad-travel-master","ad-travel-beach","ad-pokhara"]},
+ {id:"beauty",l:"Beauty, Fashion & Jewelry",v:["ad-beauty-serum","model-bridal-gold","model-fashion","model-myanmar-dress","ad-skincare","ad-herbal"]},
+ {id:"biz",l:"Business, Service & App",v:["ad-cctv","explain-hr","ad-planner-app","ad-telegram-app","ad-audit-service","model-presenter","ad-driving-school","ad-driving","ad-signboard","walk-property"]},
+ {id:"edu",l:"Education & Explainer",v:["edu-ielts","explain-whiteboard","edu-thai-words","edu-phrases","edu-conversation","tut-ai-tools","explain-audit","explain-howto"]},
+ {id:"anim",l:"Animation & Story",v:["anim-stick-office","anim-stick-couple","anim-ai-bot","anim-transition","anim-text"]}
+];
+var GAL_FIRST=12;
 function vid(id,opt){
   opt=opt||{}; var m=V[id]; var wide=m.r==="w";
   var cls="vid"+(wide?" vid--wide":"")+(opt.cap&&!wide?" vid--cap":"");
@@ -365,6 +406,23 @@ function pkg(p){
 }
 function cta(svc,title){
   return '<div class="cta"><h3>'+(title||"ဒီလို Content / Solution လိုချင်ပါသလား?")+'</h3><a class="btn" href="#enquiry" data-enquire="'+svc+'">Project ဆွေးနွေးမယ် →</a></div>';
+}
+
+/* ---------- portfolio gallery ---------- */
+function svcGallery(){
+  var all=[], cat={}, max=0;
+  GAL.forEach(function(g){ g.v.forEach(function(i){cat[i]=g.id;}); if(g.v.length>max) max=g.v.length; });
+  for(var k=0;k<max;k++){ GAL.forEach(function(g){ if(g.v[k]) all.push(g.v[k]); }); }  /* round-robin: variety first */
+  var chips='<button type="button" class="fchip" data-gal="all" aria-pressed="true">အားလုံး <b>'+all.length+'</b></button>'+
+    GAL.map(function(g){return '<button type="button" class="fchip" data-gal="'+g.id+'" aria-pressed="false">'+g.l+' <b>'+g.v.length+'</b></button>';}).join('');
+  var items=all.map(function(i,n){
+    return '<div class="vwrap'+(V[i].r==="w"?" wide":"")+'" data-cat="'+cat[i]+'"'+(n>=GAL_FIRST?' data-more hidden':'')+'>'+vid(i)+'</div>';
+  }).join('');
+  return '<section class="svc" id="s-portfolio"><div class="svc__head"><span class="eyebrow">Video Portfolio</span><h2>ဖန်တီးပြီးသား AI Video များ</h2>'+
+   '<p>လုပ်ငန်းအမျိုးအစားအလိုက် ခွဲထားပါတယ်။ သင့်လုပ်ငန်းနဲ့ ကိုက်တဲ့ Category ကို ရွေးကြည့်ပါ။</p></div>'+
+   '<div class="fchips" role="group" aria-label="Video categories">'+chips+'</div>'+
+   '<div class="ex" id="ex-gal">'+items+'</div>'+
+   '<button class="btn btn--ghost btn--sm more" type="button" data-showmore="ex-gal">Video အားလုံး ကြည့်မယ် ('+all.length+') ↓</button></section>';
 }
 
 /* ---------- services ---------- */
@@ -512,7 +570,7 @@ var CATS=[
   desc:"လုပ်ငန်း၊ Product၊ Service၊ Real Estate နဲ့ Social Media အတွက် AI နည်းပညာအသုံးပြုပြီး Short Video တွေ ဖန်တီးပေးပါတယ်။",
   price:"250,000 MMK မှ စတင်သည်",cover:["ad-skincare.jpg","model-restaurant.jpg","explain-audit.jpg"],
   note:"Short-form Video · စက္ကန့် ၂၀–၅၀",
-  render:function(){return svcAd()+svcModel()+svcWalk()+svcAnim()+svcExplain();}},
+  render:function(){return svcGallery()+svcAd()+svcModel()+svcWalk()+svcAnim()+svcExplain();}},
  {id:"automation",no:"02",title:"AI Business Automation",short:"Automation",
   desc:"နေ့စဉ် ထပ်ခါထပ်ခါလုပ်နေရတဲ့ Business Tasks တွေကို AI နဲ့ Automation ပြုလုပ်ပြီး အချိန်နဲ့ လုပ်အားကို သက်သာစေဖို့ ကူညီပေးပါတယ်။",
   price:"300,000 MMK မှ စတင်သည်",cover:["tg-balance.jpg","chatbot-travel.jpg","sheet-row.jpg"],
@@ -609,6 +667,17 @@ document.addEventListener("click",function(e){
     v.controls=true; box.classList.add("is-playing"); var p=v.play(); if(p&&p.catch)p.catch(function(){});
     v.onended=function(){ box.classList.remove("is-playing"); v.controls=false; };
     v.onpause=function(){ if(v.ended) return; };
+  }
+  var fc=e.target.closest("[data-gal]");
+  if(fc){
+    var key=fc.getAttribute("data-gal"), grid=document.getElementById("ex-gal"), mb=document.querySelector('[data-showmore="ex-gal"]');
+    Array.prototype.forEach.call(document.querySelectorAll("[data-gal]"),function(x){x.setAttribute("aria-pressed",x===fc?"true":"false");});
+    Array.prototype.forEach.call(document.querySelectorAll("#ex-gal video"),function(o){o.pause();});
+    Array.prototype.forEach.call(grid.children,function(x,n){
+      x.hidden = key==="all" ? n>=GAL_FIRST : x.getAttribute("data-cat")!==key;
+      if(key==="all"&&n>=GAL_FIRST) x.setAttribute("data-more","");
+    });
+    if(mb) mb.hidden = key!=="all";
   }
   var more=e.target.closest("[data-showmore]");
   if(more){ var g=document.getElementById(more.getAttribute("data-showmore")); Array.prototype.forEach.call(g.querySelectorAll("[data-more]"),function(x){x.hidden=false;}); more.hidden=true; }
